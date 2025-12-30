@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-
+const { sequelize, testConnection } = require('./src/config/database');
 //create express app
  const app = express();
 
@@ -13,6 +13,7 @@ const cors = require('cors');
  //basic test route
  app.get('/', (req, res)=>{
   res.json({
+
     message: 'TAKE A CHEF API is running!',
     status: 'success',
     timestamp: new Date().toDateString()
@@ -31,9 +32,11 @@ app.get('/health', (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async() => {
   console.log(` Server is running on http://localhost:${PORT}`);
   console.log(` Environment: ${process.env.NODE_ENV}`);
+  // Test database connection
+  await testConnection();
 });
 
 module.exports = app;
