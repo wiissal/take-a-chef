@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize, testConnection } = require('./src/config/database');
+const User = require('./src/models/User');
 //create express app
  const app = express();
 
@@ -37,6 +38,11 @@ app.listen(PORT, async() => {
   console.log(` Environment: ${process.env.NODE_ENV}`);
   // Test database connection
   await testConnection();
+
+   // Sync models with database (creates tables)
+  await sequelize.sync({ alter: true });
+  console.log(' Database models synchronized!'); 
 });
+
 
 module.exports = app;
