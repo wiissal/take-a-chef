@@ -12,18 +12,10 @@ const Booking = sequelize.define('Booking', {
   customer_id:{
     type: DataTypes.INTEGER,
     allowNull: false,
-    references:{
-      model: 'customers',
-      key: 'id'
-    }
   },
   chef_id:{
     type: DataTypes.INTEGER,
     allowNull: false,
-    references:{
-      model: 'chefs',
-      key: 'id'
-    }
   },
   booking_date:{
     type: DataTypes.DATEONLY,
@@ -57,12 +49,5 @@ const Booking = sequelize.define('Booking', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
-
-//define relationships
-Booking.belongsTo(Customer, {foreignKey: 'customer_id', as : 'customer'});
-Customer.hasMany(Booking, {foreignKey:'customer_id' , as :'bookings'});
-
-Booking.belongsTo(Chef, {foreignKey: 'chef_id', as: 'chef'});
-Chef.hasMany(Booking, {foreignKey:'chef_id', as: 'bookings'});
 
 module.exports = Booking;

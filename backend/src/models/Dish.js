@@ -9,12 +9,9 @@ const Dish = sequelize.define('Dish', {
     autoIncrement: true
   },
   chef_id :{
-    type: DataTypes.INTIGER,
+    type: DataTypes.INTEGER,
     allowNull: false,
-    references:{
-      model: 'chefs',
-      key: 'id',
-    }
+    
   },
   name:{
     type: DataTypes.STRING(100),
@@ -42,8 +39,5 @@ const Dish = sequelize.define('Dish', {
   updatedAt: 'updated_at'
 });
 
-//define relationships
-Dish.belongsTo(Chef , {foreignKey: 'chef_id', as : 'chef'});
-Chef.hasMany(Dish, {foreignKey: 'chef_id', as : 'dishes'});
 
 module.exports= Dish;

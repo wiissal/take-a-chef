@@ -2,7 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize, testConnection } = require('./src/config/database');
+//import all models
 const User = require('./src/models/User');
+const Chef = require('./src/models/Chef');
+const Customer = require ('./src/models/Customer');
+const Dish = require('./src/models/Dish');
+const Booking = require('./src/models/Booking');
+const Review = require('./src/models/Review');
+
 //create express app
  const app = express();
 

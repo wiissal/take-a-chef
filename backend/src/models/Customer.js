@@ -9,18 +9,18 @@ const Customer = sequelize.define('Customer',{
     autoIncrement: true
   },
   user_id:{
-    type: DataTypes.INTIGER,
+    type: DataTypes.INTEGER,
     allowNull: false,
     unique: true,
-    references:{
-      model: 'users',
-      key: 'id'
-    }
+   
   },
   phone:{
     type: DataTypes.STRING(20),
     allowNull: true,
   },
+  address: {
+    type: DataTypes.STRING(255)  // Add this - you forgot it!
+  }
 },{
   tableName: 'customers',
   timestamps: true,
@@ -28,7 +28,5 @@ const Customer = sequelize.define('Customer',{
   updatedAt: 'updated_at'
 });
 
-Customer.belongsTo(User, { foreignKey: 'user_id', as: 'user'});
-User.hasOne(Customer, { foreignKey: 'user_id' , as : 'costumer'});
 
 module.exports = Customer;

@@ -5,7 +5,7 @@ const Chef = require("./Chef");
 
 const Review = sequelize.define("Review", {
   id: {
-    types: DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
@@ -13,18 +13,12 @@ const Review = sequelize.define("Review", {
     type: DataTypes.INTEGER,
     allowNull: false,
     unique: true,
-    references: {
-      model: "bookings",
-      key: "id",
-    },
+    
   },
   chef_id:{
     type: DataTypes.INTEGER,
     allowNull:false,
-    references: {
-      model: 'chefs',
-      key: 'id'
-    }
+   
   },
   rating:{
     type: DataTypes.INTEGER,
@@ -45,11 +39,5 @@ const Review = sequelize.define("Review", {
   updatedAt: 'updated_at'
 });
 
-//define relationships
-Review.belongsTo(Booking, {foreignKey: 'booking_id', as: 'booking'});
-Booking.hasOne(Review, {foreignKey: 'chef_id', as: 'reviews'});
-
-Review.belongsTo(Chef, {foreignKey: 'chef_id', as: 'chef'});
-Chef.hasMany(Review, {foreignKey: ' chef_id', as: 'reviews'});
 
 module.exports= Review;
