@@ -4,7 +4,7 @@ const {Chef} = require('./Chef');
 
 const Dish = sequelize.define('Dish', {
   id:{
-    type: DataTypes.INTIGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },

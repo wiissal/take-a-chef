@@ -4,7 +4,7 @@ const User = require('./User');
 
 const Chef = sequelize.define('Chef',{
   id:{
-    type: DataTypes.INTIGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
