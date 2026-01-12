@@ -9,6 +9,7 @@ const Customer = require ('./src/models/Customer');
 const Dish = require('./src/models/Dish');
 const Booking = require('./src/models/Booking');
 const Review = require('./src/models/Review');
+const { notFound, errorHandler } = require('./src/middlewares/error.middleware');
 
 //create express app
  const app = express();
@@ -36,6 +37,17 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
+// Test error route (to test error handling)
+app.get('/test-error', (req, res, next) => {
+  const ApiError = require('./src/utils/ApiError');
+  next(new ApiError(400, 'This is a test error!'));
+});
+
+//error handler
+app.use(notFound);
+
+//global error handler
+app.use(errorHandler)
 
 // Start server
 const PORT = process.env.PORT || 3000;
