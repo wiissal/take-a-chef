@@ -1,35 +1,86 @@
+//  environment variables
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express'); 
+const swaggerSpec = require('./src/config/swagger'); 
 const { sequelize, testConnection } = require('./src/config/database');
-//import all models
-const User = require('./src/models/User');
-const Chef = require('./src/models/Chef');
-const Customer = require ('./src/models/Customer');
-const Dish = require('./src/models/Dish');
-const Booking = require('./src/models/Booking');
-const Review = require('./src/models/Review');
+const { User, Chef, Customer, Dish, Booking, Review } = require('./src/models');
 const { notFound, errorHandler } = require('./src/middlewares/error.middleware');
 
-//create express app
- const app = express();
+// Create Express app
+const app = express();
 
- //middleware
- app.use(cors());
- app.use(express.json());
- app.use(express.urlencoded({extended: true}));
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
- //basic test route
- app.get('/', (req, res)=>{
+// Swagger Documentation 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Take A Chef API Docs'
+}));
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Welcome endpoint
+ *     tags: [General]
+ *     description: Returns a welcome message with API status
+ *     responses:
+ *       200:
+ *         description: API is running successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example:  Take A Chef API is running!
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ */
+app.get('/', (req, res) => {
   res.json({
-
-    message: 'TAKE A CHEF API is running!',
+    message: ' Take A Chef API is running!',
     status: 'success',
-    timestamp: new Date().toDateString()
+    timestamp: new Date().toISOString()
   });
- });
+});
 
- // Health check route
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check endpoint
+ *     tags: [General]
+ *     description: Returns server health status
+ *     responses:
+ *       200:
+ *         description: Server is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                status:
+ *                   type: string
+ *                   example: healthy
+ *                 uptime:
+ *                   type: number
+ *                   example: 123.456
+ *                 environment:
+ *                   type: string
+ *                   example: development
+ */
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
@@ -37,31 +88,33 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
-// Test error route (to test error handling)
+
+// Test error route
 app.get('/test-error', (req, res, next) => {
   const ApiError = require('./src/utils/ApiError');
   next(new ApiError(400, 'This is a test error!'));
 });
 
-//error handler
+// 404 Error Handler
 app.use(notFound);
 
-//global error handler
-app.use(errorHandler)
+// Global Error Handler
+app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async() => {
+app.listen(PORT, async () => {
   console.log(` Server is running on http://localhost:${PORT}`);
+  console.log(` API Documentation available at http://localhost:${PORT}/api-docs`); // ADD THIS
   console.log(` Environment: ${process.env.NODE_ENV}`);
+  
   // Test database connection
   await testConnection();
-
-   // Sync models with database (creates tables)
+  
+  // Sync models with database
   await sequelize.sync({ alter: true });
-  console.log(' Database models synchronized!'); 
+  console.log(' Database models synchronized!');
 });
-
 
 module.exports = app;
