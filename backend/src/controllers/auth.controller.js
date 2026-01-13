@@ -108,7 +108,7 @@ const register = async (req, res , next) => {
      //get current user profile  "access: private"
      const getMe = async (req, res, next )=> {
       try{
-        const user = await User.findByPk(req.user.user_id,{
+        const user = await User.findByPk(req.user.id,{
           attributes:{exclude: ['password_hash']}
         });
         if (!user){

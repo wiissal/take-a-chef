@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, next)=>{
   }
 
   //dev environment - sending full error
-  if(Process.env.NODE_ENV ==='development'){
+  if(process.env.NODE_ENV ==='development'){
     res.status(statusCode).json({
  success: false,
       status: statusCode,

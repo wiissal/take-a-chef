@@ -1,4 +1,4 @@
-//  environment variables
+// Load environment variables
 require('dotenv').config();
 
 const express = require('express');
@@ -40,7 +40,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
  *               properties:
  *                 message:
  *                   type: string
- *                   example:  Take A Chef API is running!
+ *                   example: Take A Chef API is running!
  *                 status:
  *                   type: string
  *                   example: success
@@ -50,7 +50,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
  */
 app.get('/', (req, res) => {
   res.json({
-    message: ' Take A Chef API is running!',
+    message: '🎉 Take A Chef API is running!',  
     status: 'success',
     timestamp: new Date().toISOString()
   });
@@ -71,7 +71,7 @@ app.get('/', (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                status:
+ *                 status:
  *                   type: string
  *                   example: healthy
  *                 uptime:
@@ -88,7 +88,8 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
-//API Routes
+
+// API Routes
 const authRoutes = require('./src/routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
@@ -109,7 +110,7 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
   console.log(` Server is running on http://localhost:${PORT}`);
-  console.log(` API Documentation available at http://localhost:${PORT}/api-docs`); // ADD THIS
+  console.log(` API Documentation available at http://localhost:${PORT}/api-docs`);
   console.log(` Environment: ${process.env.NODE_ENV}`);
   
   // Test database connection
