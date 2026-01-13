@@ -88,6 +88,9 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV
   });
 });
+//API Routes
+const authRoutes = require('./src/routes/auth.routes');
+app.use('/api/auth', authRoutes);
 
 // Test error route
 app.get('/test-error', (req, res, next) => {

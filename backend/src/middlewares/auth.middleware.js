@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const User = require('../models')
 
 //protect routes and verify jwt token
+const protect = async (req, res, next) => {
 try{
   let token;
    // Check if token exists in headers
@@ -32,7 +33,7 @@ try{
     return next(new ApiError(401, 'Not authorized, token failed'));
   }
 
-
+};
 // Restrict to specific roles
 const restrictTo = (...roles) => {
   return (req, res, next) => {
