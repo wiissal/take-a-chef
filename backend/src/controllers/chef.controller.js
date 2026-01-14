@@ -1,6 +1,6 @@
 const {Chef, User,Customer, Dish, Review, Booking} = require ('../models');
 const ApiError = require ('../utils/ApiError');
-const {Op} = require ('sequelize');
+const { Op } = require ('sequelize');
 
 //get all chefs with search and filters 
 
@@ -146,7 +146,7 @@ const getChefById = async (req, res, next) => {
     const{ category, minPrice, maxPrice, page =1, limit=10} = req.query;
 
     //check if chef exists
-    const chef = await chef.findByPk(id);
+    const chef = await Chef.findByPk(id);
     if(!chef) {
       return next(new ApiError(404 , 'Chef not found'))
     }
@@ -154,7 +154,7 @@ const getChefById = async (req, res, next) => {
     const whereConditions = {chef_id: id};
     if(category){
       whereConditions.category= {
-        [Op.ilike]: `%${category}%`
+        [Op.iLike]: `%${category}%`
       };
     }
     if(minPrice || maxPrice){
