@@ -116,3 +116,52 @@ const getAllChefs = async (req, res, next) =>{
     next(error)
   }
  };
+
+ //get chef's dishes
+ const getChefDishes = async (req, res, next)=>{
+  try{
+    const { id } = req.params;
+    const{ category, minPrice, maxPrice, page =1, limit=10} = req.query;
+
+    //check if chef exists
+    const chef = await chef.findByPk(id);
+    if(!chef) {
+      return next(new ApiError(404 , 'Chef not found'))
+    }
+    //build after conditions
+    const whereConditions = {chef_id: id};
+    if(category){
+      whereConditions.category= {
+        [Op.ilike]: `%${category}%`
+      };
+    }
+    if(minPrice || maxPrice){
+      whereConditions.price ={};
+      if(minPrice) whereConditions.price[Op.gte] = parseFloat(minPrice);
+      if(maxPrice) whereConditions.price[Op.lte] = parseFloat(maxPrice);
+    }
+    //pagination
+    const offset = (page -1) * limit;
+    const {count, rows: dishes} = await Dish.findAndCountAll({
+      where: whereConditions,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order:[['created_at', 'DESC']]
+    });
+    const totalPages = Math.ceil(count / limit);
+    res. status(200).json({
+      success: true,
+      data:{
+        dishes,
+        pagination:{
+          currentPage: parseInt(page),
+          totalPages,
+          totalDishes: count,
+          dishesPerPage: parseInt(limit)
+        }
+      }
+    });
+  }catch (error){
+    next(error);
+  }
+};
