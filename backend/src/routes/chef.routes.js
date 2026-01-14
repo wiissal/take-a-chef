@@ -11,38 +11,7 @@ const {
  * @swagger
  * tags:
  *   name: Chefs
- *   description: Chef discovery and search
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Chef:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         user_id:
- *           type: integer
- *         bio:
- *           type: string
- *         specialty:
- *           type: string
- *         rating:
- *           type: number
- *           format: float
- *         total_reviews:
- *           type: integer
- *         User:
- *           type: object
- *           properties:
- *             id:
- *               type: integer
- *             name:
- *               type: string
- *             email:
- *               type: string
+ *   description: Chef discovery and search endpoints
  */
 
 /**
@@ -66,52 +35,30 @@ const {
  *         name: minRating
  *         schema:
  *           type: number
- *         description: Minimum rating filter
+ *         description: Minimum rating
  *       - in: query
  *         name: page
  *         schema:
  *           type: integer
  *           default: 1
- *         description: Page number
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *           default: 10
- *         description: Items per page
  *       - in: query
  *         name: sortBy
  *         schema:
  *           type: string
- *           enum: [rating, created_at, total_reviews]
  *           default: rating
- *         description: Sort field
  *       - in: query
  *         name: order
  *         schema:
  *           type: string
- *           enum: [ASC, DESC]
  *           default: DESC
- *         description: Sort order
  *     responses:
  *       200:
- *         description: List of chefs with pagination
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 data:
- *                   type: object
- *                   properties:
- *                     chefs:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Chef'
- *                     pagination:
- *                       type: object
+ *         description: List of chefs retrieved successfully
  */
 router.get('/', getAllChefs);
 
@@ -130,7 +77,7 @@ router.get('/', getAllChefs);
  *         description: Chef ID
  *     responses:
  *       200:
- *         description: Chef details with dishes and reviews
+ *         description: Chef details retrieved successfully
  *       404:
  *         description: Chef not found
  */
@@ -172,7 +119,7 @@ router.get('/:id', getChefById);
  *           default: 10
  *     responses:
  *       200:
- *         description: List of chef's dishes
+ *         description: Chef dishes retrieved successfully
  *       404:
  *         description: Chef not found
  */
@@ -202,7 +149,7 @@ router.get('/:id/dishes', getChefDishes);
  *           default: 10
  *     responses:
  *       200:
- *         description: List of chef's reviews with stats
+ *         description: Chef reviews retrieved successfully
  *       404:
  *         description: Chef not found
  */

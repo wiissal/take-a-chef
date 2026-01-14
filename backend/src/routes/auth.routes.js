@@ -1,16 +1,17 @@
-const express = require ('express');
+const express = require('express');
 const router = express.Router();
-const {register, login, getMe} = require ('../controllers/auth.controller');
-const {protect} = require ('../middlewares/auth.middleware');
+const { register, login, getMe } = require('../controllers/auth.controller');
+const { protect } = require('../middlewares/auth.middleware');
 
 /**
  * @swagger
  * tags:
- * name: Authentication
- * description: User authentication and authorization
+ *   name: Authentication
+ *   description: User authentication and authorization
  */
-/** 
-@swagger
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     User:
@@ -41,6 +42,7 @@ const {protect} = require ('../middlewares/auth.middleware');
  *             token:
  *               type: string
  */
+
 /**
  * @swagger
  * /api/auth/register:
@@ -98,8 +100,8 @@ const {protect} = require ('../middlewares/auth.middleware');
  */
 router.post('/register', register);
 
- /**
-  * @swagger
+/**
+ * @swagger
  * /api/auth/login:
  *   post:
  *     summary: Login user
@@ -160,6 +162,3 @@ router.post('/login', login);
 router.get('/me', protect, getMe);
 
 module.exports = router;
-
-
-
