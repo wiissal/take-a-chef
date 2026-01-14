@@ -1,86 +1,95 @@
-const {Chef, User, Dish, Review, Booking} = require ('../models');
+const {Chef, User,Customer, Dish, Review, Booking} = require ('../models');
 const ApiError = require ('../utils/ApiError');
 const {Op} = require ('sequelize');
 
 //get all chefs with search and filters 
-const getAllChefs = async (req, res, next) =>{
-  try{
-    const{
-      search,
-      speciality,
-      minRating,
-      page = 1,
-      limit= 10,
-      sortBy= 'rating',
+
+const getAllChefs = async (req, res, next) => {
+  try {
+    const { 
+      search, 
+      specialty, 
+      minRating, 
+      page = 1, 
+      limit = 10,
+      sortBy = 'rating',
       order = 'DESC'
     } = req.query;
-    //build filter conditions
-    const whereConditions = {};
 
-    //search by speciality
-    if(speciality){
-      whereConditions.speciality ={
-        [Op.ilike]: `%{speciality}%`
+    // Build filter conditions
+    const whereConditions = {};
+    
+    // Search by specialty
+    if (specialty) {
+      whereConditions.specialty = {
+        [Op.iLike]: `%${specialty}%`
       };
     }
-    //filter by min rating 
-    if(minRating){
+
+    // Filter by minimum rating
+    if (minRating) {
       whereConditions.rating = {
         [Op.gte]: parseFloat(minRating)
       };
     }
 
-    //User search conditions (name)
-    const userWhereConditions= {};
-    if(search){
-      userWhereConditions.name ={
+    // User search conditions (name)
+    const userWhereConditions = {};
+    if (search) {
+      userWhereConditions.name = {
         [Op.iLike]: `%${search}%`
       };
     }
-    //Pagination
-    const offset = (page -1) * limit;
 
-    //Query chefs with filters
-    const {count, rows: chefs} = await Chef.findAndCountAll({
+    // Pagination
+    const pageNumber = parseInt(page);
+    const pageLimit = parseInt(limit);
+    const offset = (pageNumber - 1) * pageLimit;
+
+    // Query chefs with filters
+    const { count, rows: chefs } = await Chef.findAndCountAll({
       where: whereConditions,
-      include :[
+      include: [
         {
           model: User,
           attributes: ['id', 'name', 'email', 'created_at'],
-          where: userWhereConditions
+          where: Object.keys(userWhereConditions).length > 0 ? userWhereConditions : undefined
         }
       ],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      order:[[sortBy, order]],
+      limit: pageLimit,
+      offset: offset,
+      order: [[sortBy, order]],
       distinct: true
     });
 
-    //calculate pagination info
-    const totatlPages= Math.ceil(count / limit);
+    // Calculate pagination info
+    const totalPages = Math.ceil(count / pageLimit);
+
     res.status(200).json({
       success: true,
-      data:{
+      data: {
         chefs,
-        pagination:{
-          currentPage: parseInt(page),
-          totalPages,
-          totatChefs: count,
-          chefsPerPage :parseInt(limit),
-          hasNextPage: page < totalPages,
-          hasPrevPage: page > 1
+        pagination: {
+          currentPage: pageNumber,
+          totalPages: totalPages,
+          totalChefs: count,
+          chefsPerPage: pageLimit,
+          hasNextPage: pageNumber < totalPages,
+          hasPrevPage: pageNumber > 1
         }
       }
     });
   } catch (error) {
-    next (error);
+    next(error);
   }
 };
 //get chef by ID with full details 
- const getChefById = async (req, res, next) =>{
-  try{
-    const { id } = req.param;
-    const chef = await Chef.findByPk(id,{
+ 
+const getChefById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const chef = await Chef.findByPk(id, {
       include: [
         {
           model: User,
@@ -88,34 +97,47 @@ const getAllChefs = async (req, res, next) =>{
         },
         {
           model: Dish,
-          attributes : ['id', 'name', 'description', 'price', 'image_url', 'category']
+          attributes: ['id', 'name', 'description', 'price', 'image']
         },
         {
           model: Review,
-          include:[
-          {
-            model: User,
-            attributes:['name']
-          }
+          include: [
+            {
+              model: Booking,
+              attributes: ['id', 'booking_date'],
+              include: [
+                {
+                  model: Customer,
+                  include: [
+                    {
+                      model: User,
+                      attributes: ['name']
+                    }
+                  ]
+                }
+              ]
+            }
           ],
           limit: 5,
           order: [['created_at', 'DESC']]
         }
       ]
     });
-    if(!chef){
+
+    if (!chef) {
       return next(new ApiError(404, 'Chef not found'));
     }
+
     res.status(200).json({
       success: true,
-      data : {
+      data: {
         chef
       }
     });
-  }catch (error){
-    next(error)
+  } catch (error) {
+    next(error);
   }
- };
+};
 
  //get chef's dishes
  const getChefDishes = async (req, res, next)=>{

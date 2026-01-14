@@ -99,7 +99,7 @@ const seedDatabase = async () => {
         description: 'Traditional Moroccan chicken tagine slow-cooked with preserved lemons and olives',
         price: 120.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641'
+        image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641'
       },
       {
         chef_id: chef1.id,
@@ -107,7 +107,7 @@ const seedDatabase = async () => {
         description: 'Authentic Moroccan couscous with tender lamb, seven vegetables, and aromatic broth',
         price: 150.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb'
+        image: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb'
       },
       {
         chef_id: chef1.id,
@@ -115,7 +115,7 @@ const seedDatabase = async () => {
         description: 'Traditional sweet mint tea served in authentic silver teapot',
         price: 25.00,
         category: 'Beverage',
-        image_url: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9'
+        image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9'
       },
       {
         chef_id: chef1.id,
@@ -123,7 +123,7 @@ const seedDatabase = async () => {
         description: 'Rich and hearty traditional Moroccan soup with chickpeas, lentils, and lamb',
         price: 40.00,
         category: 'Starter',
-        image_url: 'https://images.unsplash.com/photo-1547592166-23ac45744acd'
+        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd'
       },
       {
         chef_id: chef1.id,
@@ -131,7 +131,7 @@ const seedDatabase = async () => {
         description: 'Traditional Moroccan pie with chicken, almonds, and cinnamon in phyllo pastry',
         price: 90.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1601050690597-df0568f70950'
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950'
       }
     ]);
 
@@ -143,7 +143,7 @@ const seedDatabase = async () => {
         description: 'Assorted dips including hummus, baba ganoush, and zaalouk',
         price: 80.00,
         category: 'Starter',
-        image_url: 'https://images.unsplash.com/photo-1541529086526-db283c563270'
+        image: 'https://images.unsplash.com/photo-1541529086526-db283c563270'
       },
       {
         chef_id: chef2.id,
@@ -151,7 +151,7 @@ const seedDatabase = async () => {
         description: 'Fresh seafood in aromatic tomato and herb sauce',
         price: 180.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1559847844-d05ce04d28bc'
+        image: 'https://images.unsplash.com/photo-1559847844-d05ce04d28bc'
       },
       {
         chef_id: chef2.id,
@@ -159,7 +159,7 @@ const seedDatabase = async () => {
         description: 'Assorted traditional Moroccan pastries with honey and nuts',
         price: 45.00,
         category: 'Dessert',
-        image_url: 'https://images.unsplash.com/photo-1519676867240-f03562e64548'
+        image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548'
       }
     ]);
 
@@ -171,7 +171,7 @@ const seedDatabase = async () => {
         description: 'Modern take on traditional couscous with sous-vide lamb and seasonal vegetables',
         price: 165.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141'
+        image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141'
       },
       {
         chef_id: chef3.id,
@@ -179,7 +179,7 @@ const seedDatabase = async () => {
         description: 'Pan-seared salmon with ras el hanout and citrus couscous',
         price: 140.00,
         category: 'Main Course',
-        image_url: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288'
+        image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288'
       },
       {
         chef_id: chef3.id,
@@ -187,7 +187,7 @@ const seedDatabase = async () => {
         description: 'Creamy panna cotta infused with Moroccan orange blossom water',
         price: 50.00,
         category: 'Dessert',
-        image_url: 'https://images.unsplash.com/photo-1488477181946-6428a0291777'
+        image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777'
       }
     ]);
 

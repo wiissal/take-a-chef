@@ -28,6 +28,10 @@ const Dish = sequelize.define('Dish', {
         min: 0
       }
     }, 
+    category: {                           
+    type: DataTypes.STRING(50),
+    allowNull: true
+  },
    image:{
     type:  DataTypes.STRING(500),
     allowNull: true
