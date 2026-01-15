@@ -189,57 +189,69 @@ const getChefById = async (req, res, next) => {
 };
 
 //Get chef's reviews
-const getChefReviews = async (req, res, next) =>{
-  try{
+const getChefReviews = async (req, res, next) => {
+  try {
     const { id } = req.params;
-    const {page =1 , limit = 10} = req.query;
+    const { page = 1, limit = 10 } = req.query;
 
-    //check if chef exists
+    // Check if chef exists
     const chef = await Chef.findByPk(id);
-    if(!chef){
+    if (!chef) {
       return next(new ApiError(404, 'Chef not found'));
     }
-    //pagination
-    const offset = (page - 1) * limit;
-    const{count, rows: reviews } = await Review. findAndCountAll({
-      where: {chef_id: id },
-      include:[
-        {
-          model: User,
-          attributes: ['id', 'name']
-        },
+
+    // Pagination
+    const pageNumber = parseInt(page);
+    const pageLimit = parseInt(limit);
+    const offset = (pageNumber - 1) * pageLimit;
+
+    const { count, rows: reviews } = await Review.findAndCountAll({
+      where: { chef_id: id },
+      include: [
         {
           model: Booking,
-          attributes: ['id', 'booking_date']
+          attributes: ['id', 'booking_date'],
+          include: [
+            {
+              model: Customer,
+              include: [
+                {
+                  model: User,
+                  attributes: ['id', 'name']
+                }
+              ]
+            }
+          ]
         }
       ],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      order:[['created_at', 'DESC']]
+      limit: pageLimit,
+      offset: offset,
+      order: [['created_at', 'DESC']]
     });
 
-    const totalPages = Math.ceil(count / limit);
-    
-    //calculate average rating
+    const totalPages = Math.ceil(count / pageLimit);
+
+    // Calculate average rating
     const avgRating = reviews.length > 0
-    ? reviews.reduce((sum, reviews) => sum + reviews.rating, 0) / reviews.length
-    : 0;
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : 0;
+
     res.status(200).json({
       success: true,
-      data:{
+      data: {
         reviews,
-        stats:{
+        stats: {
           totalReviews: count,
           averageRating: avgRating.toFixed(2)
         },
-        pagination:{
-          currentPage: parseInt(page),
+        pagination: {
+          currentPage: pageNumber,
           totalPages,
-          reviewsPerPages: parseInt(limit)
+          reviewsPerPage: pageLimit
         }
       }
     });
-  } catch (error){
+  } catch (error) {
     next(error);
   }
 };
