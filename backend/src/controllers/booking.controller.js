@@ -60,3 +60,71 @@ const createBooking = async (req, res, next) => {
     next(error);
   }
 };
+//get all bookings for current user (customer or chef)
+const getUserBookings = async (req, res, next) => {
+try{
+  const {status, page = 1, limit = 10} = req.query;
+  let whereConditions = {};
+  let include = [];
+
+  //build query bqsed on user role
+  if(req.user.role === 'customer'){
+    const customer = await Customer.findOne({where: {user_id: req.user.id} });
+    if (!customer){
+      return next(new ApiError(404, 'Customer profile not found'));
+    }
+    whereConditions.customer_id = customer.id;
+    include = [
+      {
+        model: Chef,
+        include :[{model: User, attributes: ['name', 'email'] }]
+      }
+    ];
+  }else if (req.user.role === 'chef'){
+    const chef = await Chef.findOne({where: {user_id: req.user.id} });
+    if(!chef){
+      return next(new ApiError (404, 'Chef profile not found'));
+    }
+    whereConditions.chef_id = chef.id;
+    include = [
+      {
+        model: Customer,
+        include: [{model: User, attributes:['name', 'email'] }]
+      }
+    ];
+  }
+
+  //filter by status if provided
+  if(status) {
+    whereConditions.status = status;
+  }
+
+  //pagination
+  const pageNumber = parseInt(page);
+  const pageLimit= parseInt(limit);
+  const offset = (pageNumber-1) * pageLimit;
+  const {count, rows: bookings} = await Booking.findAndCountAll({
+    where: whereConditions,
+    include,
+    limit: pageLimit,
+    offset: offset,
+    order: [['booking_date', 'DESC']]
+  });
+  const totalPages = Math.ceil(count / pageLimit);
+  res.status(200).json({
+    success: true,
+    data:{
+      bookings,
+      pagination:{
+        currentPage: pageNumber,
+        totalPages,
+        totalBookings: count,
+        bookingsPerPage: pageLimit
+      }
+    }
+  });
+} catch(error){
+  next(error);
+}
+};
+
