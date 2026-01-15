@@ -128,3 +128,42 @@ try{
 }
 };
 
+//get booking by id
+const getBookingById = async (req, res, next) =>{
+  try{
+     const { id } = req.params;
+     const booking = await Booking.findByPk(id, {
+      include: [
+        {
+          model: Chef,
+          include: [{model: User, attributes: ['name', 'email'] }]
+        },
+        {
+          model: Customer,
+          include: [{model: User, attributes: ['name', 'email'] }]
+        }
+      ]
+     });
+     if(!booking) {
+      return next (new ApiError (400, 'Booking not found'));
+     }
+
+     //verify user had access to booking
+     const customer = await Customer.findOne({where: {user_id: req.user.id} });
+     const chef = await Chef.findOne({where: {user_id: req.user.id} });
+
+     const isCustomer = await Customer.findOne({where: {user_id: req.user.id} });
+     const isChef = chef && booking.chef_id === chef.id;
+     if (!isCustomer && !isChef){
+      return next(new ApiError(403, ' Not authorized to view this booking'));
+     }
+     res.status(200).json({
+      sucess: true,
+      data:{
+        booking
+      }
+     });
+  }catch(error){
+    next(error);
+  }
+ };
