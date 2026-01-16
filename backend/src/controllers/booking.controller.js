@@ -167,3 +167,59 @@ const getBookingById = async (req, res, next) =>{
     next(error);
   }
  };
+
+ //update booking status for chef only " might implement it later"
+ const updateBookingStatus = async (req, res, next) => {
+  try{
+    const{ id } = req.params;
+    const { status } = req.body;
+
+    //verify the role of user is a chef to validate and update booking
+    if (req.user.role !== 'chef'){
+      return next (new ApiError(403, ' Only chefs can update booking status'));
+    }
+    //validate status
+    const validStatuses = ['pending', 'confirmed', 'cancelled', 'completed'];
+    if  (!validStatuses.includes (status)){
+      return next (new ApiError(400, `status must be one of : ${validStatuses.join(', ')} `));
+    }
+    
+    //get chef profile
+    const  chef = await Chef.findOne({where: {user_id: req.user.id} });
+    if (!chef){
+      return next (new ApiError(404, ' Chef profile not found'));
+    }
+
+    //find booking
+    const booking = await Booking .findByPk(id);
+    if(!booking){
+      return next (new ApiError(404, 'Booking not found'));
+    }
+    //verify this booking belongs to a chef
+    if(booking.chef_id !== chef.id){
+      return next (new ApiError(403, 'Not authorized to update this booking'));
+    }
+    //update status
+    booking. status = status;
+    await booking.save();
+
+    //fetch updated booking with relations
+    const updatedBooking = await Booking.findByPk(id, {
+   include:[
+    {
+      model: Customer,
+      include: [{model: User, attributes: ['name','email'] }]
+    }
+   ]
+   });
+   res.status(200).json({
+    sucess: true,
+    message: `Booking ${status} successfully`,
+    data :{
+      booking : updatedBooking
+    }
+   });
+  }catch (error){
+    next(error);
+  }
+ };
