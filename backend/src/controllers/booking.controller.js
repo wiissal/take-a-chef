@@ -278,7 +278,7 @@ const cancelBooking = async (req, res, next) => {
     }
 
     //update status to cancelled
-    booking.status = " cancelled";
+    booking.status = "cancelled";
     await booking.save();
 
     res.status(200).json({

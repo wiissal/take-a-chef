@@ -124,8 +124,8 @@ app.listen(PORT, async () => {
   await testConnection();
   
   // Sync models with database
-  // await sequelize.sync({ alter: true });
-  // console.log(' Database models synchronized!');
+  await sequelize.sync({ alter: true });
+  console.log(' Database models synchronized!');
 });
 
 module.exports = app;

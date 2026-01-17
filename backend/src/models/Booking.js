@@ -32,10 +32,10 @@ const Booking = sequelize.define('Booking', {
       min: 1
     }
   },
-  status :{
-   type: DataTypes.ENUM('pending', 'confirmed', 'completed' , 'concelled'),
-   defaultValue: 'pending' 
-  },
+  status: {
+  type: DataTypes.ENUM('pending', 'confirmed', 'completed', 'cancelled'),
+  defaultValue: 'pending' 
+},
   total_price: {
     type: DataTypes.DECIMAL(10,2),
     allowNull: false,

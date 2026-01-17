@@ -207,3 +207,7 @@ router.put('/:id/status', protect, restrictTo('chef'), updateBookingStatus);
 router.delete('/:id', protect, cancelBooking);
 
 module.exports = router;
+
+//test users
+// Customer: Amal (email: amal@test.com)
+// Chef: Hamid (email: hamid@test.com)
