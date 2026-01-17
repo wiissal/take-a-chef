@@ -223,3 +223,51 @@ const getBookingById = async (req, res, next) =>{
     next(error);
   }
  };
+ //Cancel booking by customer / chef
+ const cancelBooking = async (req, res, next) => {
+  try{
+    const { id } = req.params;
+    const booking = await Booking.findByPk(id);
+    if(!booking){
+      return next (new ApiError(404, 'Booking not found'));
+    }
+    //verify user has access to cancek this booking
+    const  customer = await Customer.findOne({where: {user_id: req.user.id} });
+    const chef = await Chef.findOne({where: {user_id: req.user.id} });
+
+    const isCustomer = customer && booking.customer_id === customer.id;
+    const isChef = chef && booking.chef_id === chef.id;
+     
+    if(!isCustomer && !isChef) {
+      return next (new ApiError (403, 'Not authorized to cancel this booking'));
+    }
+    //check if booking can be cancelled
+    if(booking.status === 'completed'){
+      return next (new ApiError(400, 'Can not cancel a completed  booking'));
+    }
+    if(booking.status === 'cancelled'){
+      return next (new ApiError(400, ' Booking is already cancelled'));
+    }
+
+    //update status to cancelled
+    booking.status = ' cancelled';
+    await booking.save();
+    
+    res.status(200).json({
+      success: true,
+      message: 'Booking cancelled successfully',
+      data: {
+        booking
+      }
+    });
+  }catch (error){
+    next(error);
+  }
+ };
+ module.exports= {
+  createBooking,
+  getUserBookings,
+  getBookingById,
+  updateBookingStatus,
+  cancelBooking
+ };
