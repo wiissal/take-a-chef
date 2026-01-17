@@ -114,7 +114,7 @@ const { protect, restrictTo } = require('../middlewares/auth.middleware');
  *       200:
  *         description: List of user bookings
  */
-router.post('/', protect, restrictTo('customer'), createBooking);
+router.post('/', protect, createBooking);
 router.get('/', protect, getUserBookings);
 
 /**
