@@ -93,11 +93,13 @@ app.get('/health', (req, res) => {
 const authRoutes = require('./src/routes/auth.routes');
 const chefRoutes = require('./src/routes/chef.routes'); 
 const bookingRoutes = require('./src/routes/booking.routes'); 
+const reviewRoutes = require('./src/routes/review.routes'); 
 
 
 app.use('/api/auth', authRoutes);
 app.use('/api/chefs', chefRoutes); 
 app.use('/api/bookings', bookingRoutes); 
+app.use('/api/reviews', reviewRoutes); 
 
 
 // Test error route
