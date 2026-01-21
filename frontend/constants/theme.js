@@ -8,9 +8,9 @@ export const COLORS = {
   darkGray: '#333333',
   
   // Status colors
-  confirmed: '#4CAF50',
-  pending: '#FF9800',
-  cancelled: '#E63946',
+  confirmed: '#76e77a',
+  pending: '#dca24c',
+  cancelled: '#eb717b',
 };
 
 export const SIZES = {
