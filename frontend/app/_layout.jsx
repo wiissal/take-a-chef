@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator } from 'react-native';
-import { QueryClientProvider } from '@tanstack/react-query'; 
+import { QueryClientProvider } from '@tanstack/react-query';
 import { COLORS } from '../constants/theme';
 import { useAuthStore } from '../src/stores';
-import { queryClient } from '../src/config/queryClient'; 
-
+import { queryClient } from '../src/config/queryClient';
 
 export default function RootLayout() {
   const router = useRouter();
@@ -15,34 +14,49 @@ export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const initAuth = async () => {
+    const initApp = async () => {
       await checkAuth();
       setIsReady(true);
+      
+      // Navigate to splash on first load if not authenticated
+      if (!isAuthenticated) {
+        router.replace('/splash');
+      }
     };
-    initAuth();
+    initApp();
   }, []);
+
   useEffect(() => {
     if (!isReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';
+    const inTabsGroup = segments[0] === '(tabs)';
+    const onSplash = segments[0] === 'splash';
+    const onOnboarding = segments[0] === 'onboarding';
 
-    if (!isAuthenticated && !inAuthGroup) {
-      router.replace('/(auth)/login');
-    } else if (isAuthenticated && inAuthGroup) {
+    // If authenticated, go to tabs
+    if (isAuthenticated && !inTabsGroup) {
       router.replace('/(tabs)');
     }
+    // If not authenticated and not in special screens
+    else if (!isAuthenticated && !inAuthGroup && !onSplash && !onOnboarding) {
+      router.replace('/splash');
+    }
   }, [isAuthenticated, segments, isReady]);
-   if (!isReady || isLoading) {
+
+  if (!isReady || isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.background }}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primary }}>
+        <ActivityIndicator size="large" color={COLORS.secondary} />
       </View>
     );
   }
 
   return (
-    <QueryClientProvider client={queryClient}> 
+    <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="splash" />
+        <Stack.Screen name="onboarding" />
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
       </Stack>
