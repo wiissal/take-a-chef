@@ -10,18 +10,13 @@ import { queryClient } from '../src/config/queryClient';
 export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { isAuthenticated, checkAuth } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const initApp = async () => {
       await checkAuth();
       setIsReady(true);
-      
-      // Navigate to splash on first load if not authenticated
-      if (!isAuthenticated) {
-        router.replace('/splash');
-      }
     };
     initApp();
   }, []);
@@ -38,13 +33,13 @@ export default function RootLayout() {
     if (isAuthenticated && !inTabsGroup) {
       router.replace('/(tabs)');
     }
-    // If not authenticated and not in special screens
+    // If not authenticated and not already on splash/onboarding/auth
     else if (!isAuthenticated && !inAuthGroup && !onSplash && !onOnboarding) {
       router.replace('/splash');
     }
   }, [isAuthenticated, segments, isReady]);
 
-  if (!isReady || isLoading) {
+  if (!isReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primary }}>
         <ActivityIndicator size="large" color={COLORS.secondary} />
@@ -54,7 +49,7 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack screenOptions={{ headerShown: false }} initialRouteName="splash">
         <Stack.Screen name="splash" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="(auth)" />
