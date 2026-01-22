@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../../constants/theme';
 
-export default function HomeScreen() {
+export default function ProfileScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home Screen - Chefs List</Text>
+      <Text style={styles.text}>Profile Screen</Text>
     </View>
   );
 }

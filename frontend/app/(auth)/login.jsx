@@ -9,132 +9,144 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
-import { Link, useRouter} from 'expo-router';
-import { COLORS, SIZES} from '../../constants';
+import { Link, useRouter } from 'expo-router';
+import { COLORS, SIZES } from '../../constants/theme';
 import { useAuthStore } from '../../src/stores';
 
 export default function LoginScreen() {
   const router = useRouter();
   const { login, isLoading, error } = useAuthStore();
-  const [role, setRole] = useState('costumer');
+  const [role, setRole] = useState('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () =>{
-    if (!email || !password){
-      Alert.alert('Error', 'Please fill in all fields.');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
     const result = await login(email, password);
-    if(result.success) {
+    if (result.success) {
       router.replace('/(tabs)');
-    }else {
+    } else {
       Alert.alert('Login Failed', result.error);
     }
   };
+
   return (
-    (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <View style={styles.content}>
-        {/* Logo */}
-        <Text style={styles.logo}>☕ TAC</Text>
-
-        {/* Title */}
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Find your perfect chef.</Text>
-
-        {/* Role Toggle */}
-        <Text style={styles.label}>I am a:</Text>
-        <View style={styles.roleContainer}>
-          <TouchableOpacity
-            style={[styles.roleButton, role === 'customer' && styles.roleActive]}
-            onPress={() => setRole('customer')}
-          >
-            <Text style={[styles.roleText, role === 'customer' && styles.roleTextActive]}>
-              Client
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.roleButton, role === 'chef' && styles.roleActive]}
-            onPress={() => setRole('chef')}
-          >
-            <Text style={[styles.roleText, role === 'chef' && styles.roleTextActive]}>
-              Chef
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Email Input */}
-        <Text style={styles.label}>Email Address</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            placeholderTextColor={COLORS.gray}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
-
-        {/* Password Input */}
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor={COLORS.gray}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-
-        {/* Forgot Password */}
-        <TouchableOpacity style={styles.forgotButton}>
-          <Text style={styles.forgotText}>Forgot Password?</Text>
-        </TouchableOpacity>
-
-        {/* Error Message */}
-        {error && <Text style={styles.error}>{error}</Text>}
-
-        {/* Login Button */}
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={handleLogin}
-          disabled={isLoading}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          {isLoading ? (
-            <ActivityIndicator color={COLORS.secondary} />
-          ) : (
-            <Text style={styles.loginButtonText}>Login</Text>
-          )}
-        </TouchableOpacity>
+          {/* Logo */}
+          <Text style={styles.logo}> TAC</Text>
 
-        {/* Create Account Button */}
-        <Link href="/(auth)/register" asChild>
-          <TouchableOpacity style={styles.createButton}>
-            <Text style={styles.createButtonText}>Create Account</Text>
-          </TouchableOpacity>
-        </Link>
+          {/* Title */}
+          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Find your perfect chef.</Text>
 
-        {/* Or continue with */}
-        <Text style={styles.orText}>Or continue with</Text>
-        <View style={styles.socialContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text>✉️</Text>
+          {/* Role Toggle */}
+          <Text style={styles.label}>I am a:</Text>
+          <View style={styles.roleContainer}>
+            <TouchableOpacity
+              style={[styles.roleButton, role === 'customer' && styles.roleActive]}
+              onPress={() => setRole('customer')}
+            >
+              <Text style={[styles.roleText, role === 'customer' && styles.roleTextActive]}>
+                Client
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.roleButton, role === 'chef' && styles.roleActive]}
+              onPress={() => setRole('chef')}
+            >
+              <Text style={[styles.roleText, role === 'chef' && styles.roleTextActive]}>
+                Chef
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Email Input */}
+          <Text style={styles.label}>Email Address</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              placeholderTextColor={COLORS.gray}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              returnKeyType="next"
+            />
+          </View>
+
+          {/* Password Input */}
+          <Text style={styles.label}>Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              placeholderTextColor={COLORS.gray}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              returnKeyType="done"
+              onSubmitEditing={handleLogin}
+            />
+          </View>
+
+          {/* Forgot Password */}
+          <TouchableOpacity style={styles.forgotButton}>
+            <Text style={styles.forgotText}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Text>💬</Text>
+
+          {/* Error Message */}
+          {error && <Text style={styles.error}>{error}</Text>}
+
+          {/* Login Button */}
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color={COLORS.secondary} />
+            ) : (
+              <Text style={styles.loginButtonText}>Login</Text>
+            )}
           </TouchableOpacity>
-        </View>
-      </View>
+
+          {/* Create Account Button */}
+          <Link href="/(auth)/register" asChild>
+            <TouchableOpacity style={styles.createButton}>
+              <Text style={styles.createButtonText}>Create Account</Text>
+            </TouchableOpacity>
+          </Link>
+
+          {/* Or continue with */}
+          <Text style={styles.orText}>Or continue with</Text>
+          <View style={styles.socialContainer}>
+            <TouchableOpacity style={styles.socialButton}>
+              <Text style={styles.socialIcon}>✉️</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.socialButton}>
+              <Text style={styles.socialIcon}>💬</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 }
@@ -144,10 +156,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  content: {
-    flex: 1,
+  scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: SIZES.lg,
     paddingTop: 60,
+    paddingBottom: 40,
   },
   logo: {
     fontSize: SIZES.xLarge,
@@ -267,5 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  socialIcon: {
+    fontSize: 20,
+  },
 });
-  
