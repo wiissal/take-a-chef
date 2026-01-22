@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator } from 'react-native';
+import { QueryClientProvider } from '@tanstack/react-query'; 
 import { COLORS } from '../constants/theme';
 import { useAuthStore } from '../src/stores';
+import { queryClient } from '../src/config/queryClient'; 
+
 
 export default function RootLayout() {
   const router = useRouter();
@@ -38,12 +41,12 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}> 
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
       </Stack>
       <StatusBar style="dark" />
-    </>
+    </QueryClientProvider>
   );
 }
