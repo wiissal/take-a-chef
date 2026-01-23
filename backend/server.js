@@ -117,7 +117,7 @@ app.use(errorHandler);
 // Start server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0',async () => {
   console.log(` Server is running on http://localhost:${PORT}`);
   console.log(` API Documentation available at http://localhost:${PORT}/api-docs`);
   console.log(` Environment: ${process.env.NODE_ENV}`);
