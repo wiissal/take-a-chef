@@ -29,9 +29,11 @@ export default function RootLayout() {
     const onSplash = segments[0] === 'splash';
     const onOnboarding = segments[0] === 'onboarding';
     const onChefProfile = segments[0] === 'chef'; 
+      const onBooking = segments[0] === 'booking';
+
 
     // If authenticated, go to tabs (unless on chef profile or other allowed routes)
-    if (isAuthenticated && !inTabsGroup && !onChefProfile) { 
+    if (isAuthenticated && !inTabsGroup && !onChefProfile && !onBooking) { 
       router.replace('/(tabs)');
     }
     // If not authenticated and not already on splash/onboarding/auth
@@ -56,6 +58,8 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="chef/[id]" /> 
+        <Stack.Screen name="booking/[id]" /> 
+
       </Stack>
       <StatusBar style="dark" />
     </QueryClientProvider>
