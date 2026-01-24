@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 16,
+    paddingTop: 35,
+    paddingBottom: 8,
     backgroundColor: COLORS.white,
   },
   backButton: {
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   dishImage: {
     width: 60,
     height: 60,
-    borderRadius: 30,
+    borderRadius: 8,
     backgroundColor: "#F5F5F5",
   },
   dishInfo: {
