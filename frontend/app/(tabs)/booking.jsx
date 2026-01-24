@@ -4,7 +4,7 @@ import { COLORS, SIZES } from '../../constants/theme';
 export default function HistoryScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>History Screen</Text>
+      <Text style={styles.text}>Booking Screen</Text>
     </View>
   );
 }

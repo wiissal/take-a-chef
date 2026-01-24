@@ -14,8 +14,8 @@ export default function TabsLayout() {
           borderTopWidth: 1,
           borderTopColor: COLORS.lightGray,
           height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          marginBottom: 7,
+          paddingTop: 5,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -33,11 +33,11 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="bookings"
+        name="booking"
         options={{
-          title: 'Bookings',
+          title: 'Booking',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" size={size} color={color} />
+            <Ionicons name="create" size={size} color={color} />
           ),
         }}
       />
