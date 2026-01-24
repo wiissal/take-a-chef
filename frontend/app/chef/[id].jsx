@@ -86,11 +86,14 @@ export default function ChefProfileScreen() {
           {/* Action Buttons */}
           <View style={styles.buttonsRow}>
             <TouchableOpacity
-              style={styles.bookingButton}
-              onPress={() => router.push(`/booking/${id}`)}
-            >
-              <Text style={styles.bookingButtonText}>REQUEST A BOOKING</Text>
-            </TouchableOpacity>
+  style={styles.bookingButton}
+  onPress={() => {
+    console.log('🔍 Trying to navigate to booking, chef id:', id);
+    router.push('/booking/' + id);
+  }}
+>
+  <Text style={styles.bookingButtonText}>REQUEST A BOOKING</Text>
+</TouchableOpacity>
           </View>
         </View>
 
