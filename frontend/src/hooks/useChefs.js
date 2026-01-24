@@ -28,6 +28,8 @@ export const useChef = (id) => {
       return response.data.data.chef;
     },
     enabled: !!id,
+    staleTime: 5 * 60 * 1000, 
+    cacheTime: 10 * 60 * 1000, 
   });
 };
 
@@ -40,6 +42,8 @@ export const useChefDishes = (chefId) => {
       return response.data.data.dishes;
     },
     enabled: !!chefId,
+    staleTime: 5 * 60 * 1000, 
+    cacheTime: 10 * 60 * 1000, 
   });
 };
 
@@ -53,5 +57,7 @@ export const useChefReviews = (chefId) => {
       return response.data.data;
     },
     enabled: !!chefId,
+    staleTime: 5 * 60 * 1000, 
+    cacheTime: 10 * 60 * 1000, 
   });
 };
