@@ -47,7 +47,18 @@ export default function BookingScreen() {
       guests: parseInt(guests),
       specialties,
     });
-    // TODO: Navigate to confirmation or create booking
+    // Navigate to confirmation
+  router.push({
+    pathname: '/(tabs)/confirmation',
+    params: {
+      chefName: 'Chef Name', // We'll pass real data later
+      chefPhoto: 'https://i.pravatar.cc/100',
+      occasion: occasion,
+      date: selectedDate,
+      time: '7:30 PM',
+      eventType: occasion,
+    },
+  });
   };
 
   return (
