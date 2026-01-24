@@ -28,10 +28,10 @@ export default function RootLayout() {
     const inTabsGroup = segments[0] === '(tabs)';
     const onSplash = segments[0] === 'splash';
     const onOnboarding = segments[0] === 'onboarding';
-    const onChefProfile = segments[0] === 'chef'; // ← ADDED THIS
+    const onChefProfile = segments[0] === 'chef'; 
 
     // If authenticated, go to tabs (unless on chef profile or other allowed routes)
-    if (isAuthenticated && !inTabsGroup && !onChefProfile) { // ← ADDED !onChefProfile
+    if (isAuthenticated && !inTabsGroup && !onChefProfile) { 
       router.replace('/(tabs)');
     }
     // If not authenticated and not already on splash/onboarding/auth

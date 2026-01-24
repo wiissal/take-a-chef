@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -51,13 +51,15 @@ export default function HomeScreen() {
 
   ];
 
-  const filteredChefs = chefs.filter((chef) => {
+  const filteredChefs = useMemo (()=> {
+  return chefs.filter((chef) => {
     if (!searchQuery) return true;
     const searchLower = searchQuery.toLowerCase();
     const nameMatch = chef.User?.name?.toLowerCase().includes(searchLower);
     const specialtyMatch = chef.specialty?.toLowerCase().includes(searchLower);
     return nameMatch || specialtyMatch;
   });
+}, [chefs, searchQuery]);
 
   const renderFeaturedItem = ({ item }) => (
     <TouchableOpacity style={styles.featuredCard}>
@@ -72,8 +74,9 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
-  const renderChefCard = ({ item }) => (
+  const renderChefCard = useCallback(({ item }) => (
     <TouchableOpacity
+    key={item.id}
       style={styles.chefCard}
       onPress={() => router.push(`/chef/${item.id}`)}
     >
@@ -111,13 +114,13 @@ export default function HomeScreen() {
         <Text style={styles.viewButtonText}>VIEW PROFILE</Text>
       </TouchableOpacity>
     </TouchableOpacity>
-  );
+  ), [router]);
 
   if (isLoading) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color={COLORS.primary} />
-        <Text style={styles.loadingText}>Loading chefs...</Text>
+        <Text style={styles.loadingText}>chefs...</Text>
       </View>
     );
   }
@@ -183,11 +186,7 @@ export default function HomeScreen() {
               <Text style={styles.emptyText}>No chefs found</Text>
             </View>
           ) : (
-            filteredChefs.map((chef) => (
-              <View key={chef.id}>
-                {renderChefCard({ item: chef })}
-              </View>
-            ))
+            filteredChefs.map((chef) => renderChefCard({ item: chef }))
           )}
         </View>
       </ScrollView>
