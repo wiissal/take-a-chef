@@ -32,15 +32,12 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="bookings"
+      {/* <Tabs.Screen
+        name="booking"
         options={{
-          title: 'Bookings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="create" size={size} color={color} />
-          ),
+          href: null,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="history"
         options={{
