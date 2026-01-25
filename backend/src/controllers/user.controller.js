@@ -1,32 +1,28 @@
-const { User, Customer, Chef } = require('../models');
+const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 
 // GET /api/users/profile
 exports.getProfile = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
 
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'role', 'createdAt'],
-      include: [
-        {
-          model: Customer,
-          as: 'customerProfile',
-          attributes: ['id', 'preferences']
-        },
-        {
-          model: Chef,
-          as: 'chefProfile',
-          attributes: ['id', 'bio', 'specialty', 'rating', 'photo']
-        }
-      ]
+      attributes: ['id', 'name', 'email', 'role', 'created_at']
     });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.json({ user });
+    res.json({ 
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.created_at
+      }
+    });
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -37,7 +33,7 @@ exports.getProfile = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const userId = req.userId;
+    const userId = req.user.id;
 
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ message: 'All fields are required' });
