@@ -43,22 +43,28 @@ exports.changePassword = async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 6 characters' });
     }
 
+    // Fetch user WITH password field
     const user = await User.findByPk(userId);
+    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const isValidPassword = await bcrypt.compare(currentPassword, user.password);
+    // Verify current password - use password_hash
+    const isValidPassword = await bcrypt.compare(currentPassword, user.password_hash);
     if (!isValidPassword) {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
 
+    // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await user.update({ password: hashedPassword });
+    
+    // Update password - use password_hash
+    await user.update({ password_hash: hashedPassword });
 
     res.json({ message: 'Password changed successfully' });
   } catch (error) {
     console.error('Change password error:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
