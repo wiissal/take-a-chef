@@ -10,68 +10,70 @@ const generateToken = (id) => {
   });
 };
 //register new user
-const register = async (req, res , next) => {
+const register = async (req, res, next) => {
   try {
-    const {email, password, name , role, phone, address, bio, specialty} = req.body;
+    const { email, password, name, role } = req.body;
 
-    //check if user already exisys
-    const existingUser = await User.findOne ({ where : {email}});
-    if(existingUser){
-      return next (new ApiError (400, 'User with this email already exists'));
+    // Validate required fields
+    if (!email || !password || !name || !role) {
+      return next(new ApiError(400, 'Please provide email, password, name, and role'));
     }
-    //validate role
-    if(!['customer', 'chef'].includes(role)){
-      return next (new ApiError (400, 'Rolemust be either customer or chef'))
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return next(new ApiError(400, 'User already exists with this email'));
     }
-    //hash password
-    const password_hash= await bcrypt.hash(password ,10 );
-    //create user
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
     const user = await User.create({
-       email,
-      password_hash,
+      email,
+      password_hash: hashedPassword,
       name,
       role
     });
-    if( role === 'customer'){
+
+    // ✅ AUTO-CREATE CUSTOMER PROFILE IF ROLE IS CUSTOMER
+    if (role === 'customer') {
       await Customer.create({
-    user_id: user.id
+        user_id: user.id
       });
     }
-    //create role speacific profile
-    if(role=== 'chef'){
+
+    // ✅ AUTO-CREATE CHEF PROFILE IF ROLE IS CHEF (optional)
+    if (role === 'chef') {
       await Chef.create({
         user_id: user.id,
-        bio: bio|| '',
-        specialty: specialty|| '' ,
+        bio: '',
+        specialty: '',
         rating: 0,
         total_reviews: 0
       });
-    }else  if (role === 'customer'){
-      await Customer.create({
-        user_id: user.id,
-        phone: phone || '',
-        address: address || ''
-      });
     }
-    //generate token
+
+    // Generate token
     const token = generateToken(user.id);
+
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
-      data:{
+      data: {
         user: {
           id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role
-     },
-     token
+          email: user.email,
+          name: user.name,
+          role: user.role
+        },
+        token
       }
     });
-      }catch(error){
-        next(error);
-      }
-    };
+  } catch (error) {
+    next(error);
+  }
+};
     //login user 
     const login = async (req, res, next) => {
       try{
