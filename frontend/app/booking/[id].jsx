@@ -11,7 +11,8 @@ import {
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants/theme';
+import { COLORS } from '../../constants/theme';
+import api from '../../src/config/api';
 
 export default function BookingScreen() {
   const router = useRouter();
@@ -37,29 +38,40 @@ export default function BookingScreen() {
     }
   };
 
-  const handleContinue = () => {
-    console.log({
-      chef_id: id,
-      occasion,
-      chefType,
-      address,
+  const handleContinue = async () => {
+  try {
+    console.log('Creating booking...');
+    
+    // Call the API to create booking
+    const bookingData = {
+      chef_id: parseInt(id),
       booking_date: selectedDate,
+      booking_time: '19:00:00', // You can add a time picker later
       guests: parseInt(guests),
-      specialties,
+      total_price: 100, // Calculate based on chef price * guests
+      status: 'pending',
+    };
+    
+    const response = await api.post('/bookings', bookingData);
+    console.log('✅ Booking created:', response.data);
+    
+    // Navigate to confirmation with real data
+    router.push({
+      pathname: '/(tabs)/confirmation',
+      params: {
+        chefName: 'Chef Name',
+        chefPhoto: 'https://i.pravatar.cc/100',
+        occasion: occasion,
+        date: selectedDate,
+        time: '7:30 PM',
+        eventType: occasion,
+      },
     });
-    // Navigate to confirmation
-  router.push({
-    pathname: '/(tabs)/confirmation',
-    params: {
-      chefName: 'Chef Name', // We'll pass real data later
-      chefPhoto: 'https://i.pravatar.cc/100',
-      occasion: occasion,
-      date: selectedDate,
-      time: '7:30 PM',
-      eventType: occasion,
-    },
-  });
-  };
+  } catch (error) {
+    console.log('❌ Error creating booking:', error.response?.data || error.message);
+    alert('Failed to create booking. Please try again.');
+  }
+};
 
   return (
     <View style={styles.container}>
