@@ -16,7 +16,11 @@ const useAuthStore = create((set) => ({
 
       const response = await api.post("/auth/register", userData);
       const { user, token } = response.data.data;
+      
+      // Store BOTH token and user
       await SecureStore.setItemAsync("token", token);
+      await SecureStore.setItemAsync("user", JSON.stringify(user));
+      
       set({ user, token, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
@@ -34,7 +38,11 @@ const useAuthStore = create((set) => ({
     try {
       const response = await api.post("/auth/login", { email, password });
       const { user, token } = response.data.data;
+      
+      // Store BOTH token and user
       await SecureStore.setItemAsync("token", token);
+      await SecureStore.setItemAsync("user", JSON.stringify(user));
+      
       set({ user, token, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
@@ -43,18 +51,24 @@ const useAuthStore = create((set) => ({
       return { success: false, error: message };
     }
   },
+
   logout: async () => {
+    // Clear BOTH token and user
     await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("user");
     set({ user: null, token: null, isAuthenticated: false });
   },
+
   checkAuth: async () => {
     set({ isLoading: true });
     try {
       const token = await SecureStore.getItemAsync("token");
-      if (token) {
-        const response = await api.get("/auth/me");
+      const userStr = await SecureStore.getItemAsync("user");
+      
+      if (token && userStr) {
+        const user = JSON.parse(userStr);
         set({
-          user: response.data.data.user,
+          user,
           token,
           isAuthenticated: true,
           isLoading: false,
@@ -63,6 +77,7 @@ const useAuthStore = create((set) => ({
       }
     } catch (error) {
       await SecureStore.deleteItemAsync("token");
+      await SecureStore.deleteItemAsync("user");
     }
     set({ isLoading: false, isAuthenticated: false });
     return false;
