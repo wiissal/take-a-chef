@@ -31,9 +31,21 @@ export default function RootLayout() {
     const onChefProfile = segments[0] === "chef";
     const onBooking = segments[0] === "booking";
     const onBookingDetails = segments[0] === "booking-details";
+    const onPersonalInfo = segments[0] === "personal-information";
+    const onChangePassword = segments[0] === "change-password";
+    const onPrivacyPolicy = segments[0] === "privacy-policy";
 
-    // If authenticated, go to tabs (unless on chef profile or other allowed routes)
-    if (isAuthenticated && !inTabsGroup && !onChefProfile && !onBooking && !onBookingDetails) {
+    // If authenticated, go to tabs (unless on allowed routes)
+    if (
+      isAuthenticated && 
+      !inTabsGroup && 
+      !onChefProfile && 
+      !onBooking && 
+      !onBookingDetails &&
+      !onPersonalInfo &&
+      !onChangePassword &&
+      !onPrivacyPolicy
+    ) {
       router.replace("/(tabs)");
     }
     // If not authenticated and not already on splash/onboarding/auth
@@ -73,6 +85,9 @@ export default function RootLayout() {
         <Stack.Screen name="chef/[id]" />
         <Stack.Screen name="booking/[id]" />
         <Stack.Screen name="booking-details/[id]" />
+        <Stack.Screen name="personal-information" />
+        <Stack.Screen name="change-password" />
+        <Stack.Screen name="privacy-policy" />
       </Stack>
       <StatusBar style="dark" />
     </QueryClientProvider>
