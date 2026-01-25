@@ -47,16 +47,10 @@ export default function ChefProfileScreen() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <Ionicons name="arrow-back" size={24} color={COLORS.secondary} />
+          <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>CHEF PROFILE</Text>
-        <TouchableOpacity style={styles.menuButton}>
-          <Ionicons
-            name="ellipsis-vertical"
-            size={24}
-            color={COLORS.secondary}
-          />
-        </TouchableOpacity>
+        <View style={styles.placeholder} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,14 +80,14 @@ export default function ChefProfileScreen() {
           {/* Action Buttons */}
           <View style={styles.buttonsRow}>
             <TouchableOpacity
-  style={styles.bookingButton}
-  onPress={() => {
-    console.log('🔍 Trying to navigate to booking, chef id:', id);
-    router.push('/booking/' + id);
-  }}
->
-  <Text style={styles.bookingButtonText}>REQUEST A BOOKING</Text>
-</TouchableOpacity>
+              style={styles.bookingButton}
+              onPress={() => {
+                console.log(" Trying to navigate to booking, chef id:", id);
+                router.push("/booking/" + id);
+              }}
+            >
+              <Text style={styles.bookingButtonText}>REQUEST A BOOKING</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -161,7 +155,7 @@ export default function ChefProfileScreen() {
 
         {activeTab === "REVIEWS" && (
           <View style={styles.reviewsSection}>
-            <Text style={styles.emptyText}>Reviews coming soon</Text>
+            <Text style={styles.emptyText}>No Reviews </Text>
           </View>
         )}
       </ScrollView>
@@ -185,29 +179,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 35,
-    paddingBottom: 8,
+    paddingTop: 30,
+   
     backgroundColor: COLORS.white,
   },
   backButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
-    alignItems: "flex-start",
   },
   headerTitle: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "700",
     color: "#1A1A1A",
-    letterSpacing: 0.5,
-    fontStyle: "serif",
+    textAlign: "center",
+    flex: 1, 
+    fontFamily: 'serif', 
   },
-  menuButton: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "flex-end",
+  placeholder: {
+    width: 40, 
   },
+
   profileSection: {
     backgroundColor: COLORS.white,
     paddingHorizontal: 20,

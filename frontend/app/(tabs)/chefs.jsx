@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "700",
     color: "#1A1A1A",
+    fontFamily: "serif"
   },
  filtersWrapper: {
   backgroundColor: COLORS.white,
