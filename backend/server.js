@@ -50,7 +50,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
  */
 app.get('/', (req, res) => {
   res.json({
-    message: '🎉 Take A Chef API is running!',  
+    message: ' Take A Chef API is running!',  
     status: 'success',
     timestamp: new Date().toISOString()
   });
@@ -94,7 +94,7 @@ const authRoutes = require('./src/routes/auth.routes');
 const chefRoutes = require('./src/routes/chef.routes'); 
 const bookingRoutes = require('./src/routes/booking.routes'); 
 const reviewRoutes = require('./src/routes/review.routes'); 
-const userRoutes = require('./routes/user.routes'); 
+const userRoutes = require('./src/routes/user.routes'); 
 
 
 
