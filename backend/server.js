@@ -94,14 +94,17 @@ const authRoutes = require('./src/routes/auth.routes');
 const chefRoutes = require('./src/routes/chef.routes'); 
 const bookingRoutes = require('./src/routes/booking.routes'); 
 const reviewRoutes = require('./src/routes/review.routes'); 
+const userRoutes = require('./routes/user.routes'); 
+
 
 
 app.use('/api/auth', authRoutes);
 app.use('/api/chefs', chefRoutes); 
 app.use('/api/bookings', bookingRoutes); 
-console.log('✅ Bookings routes registered at /api/bookings'); 
+console.log(' Bookings routes registered at /api/bookings'); 
 
 app.use('/api/reviews', reviewRoutes); 
+app.use('/api/users', userRoutes); 
 
 
 // Test error route
