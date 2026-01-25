@@ -32,6 +32,11 @@ const register = async (req, res , next) => {
       name,
       role
     });
+    if( role === 'customer'){
+      await Customer.create({
+    user_id: user.id
+      });
+    }
     //create role speacific profile
     if(role=== 'chef'){
       await Chef.create({

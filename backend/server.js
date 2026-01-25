@@ -99,6 +99,8 @@ const reviewRoutes = require('./src/routes/review.routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/chefs', chefRoutes); 
 app.use('/api/bookings', bookingRoutes); 
+console.log('✅ Bookings routes registered at /api/bookings'); 
+
 app.use('/api/reviews', reviewRoutes); 
 
 
