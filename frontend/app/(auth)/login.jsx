@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   View,
   Text,
@@ -12,275 +12,303 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-} from 'react-native';
-import { Link, useRouter } from 'expo-router';
-import { COLORS, SIZES } from '../../constants/theme';
-import { useAuthStore } from '../../src/stores';
+  ImageBackground,
+} from "react-native";
+import { Link, useRouter } from "expo-router";
+import { COLORS, SIZES } from "../../constants/theme";
+import { useAuthStore } from "../../src/stores";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function LoginScreen() {
   const router = useRouter();
   const { login, isLoading, error } = useAuthStore();
-  const [role, setRole] = useState('customer');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [role, setRole] = useState("customer");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     const result = await login(email, password);
     if (result.success) {
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     } else {
-      Alert.alert('Login Failed', result.error);
+      Alert.alert("Login Failed", result.error);
     }
   };
 
+  // Background images based on role
+  const backgroundImage =
+    role === "customer"
+      ? "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800" // Food plate
+      : "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800"; // Chef in kitchen
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+    <ImageBackground
+      source={{ uri: backgroundImage }}
+      style={styles.backgroundImage}
+      resizeMode="cover"
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+      <LinearGradient
+        colors={["rgba(0,0,0,0.7)", "rgba(0,0,0,0.85)", "rgba(0,0,0,0.95)"]}
+        style={styles.gradient}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
         >
-          {/* Logo */}
-          <Text style={styles.logo}> TAC</Text>
-
-          {/* Title */}
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Find your perfect chef.</Text>
-
-          {/* Role Toggle */}
-          <Text style={styles.label}>I am a:</Text>
-          <View style={styles.roleContainer}>
-            <TouchableOpacity
-              style={[styles.roleButton, role === 'customer' && styles.roleActive]}
-              onPress={() => setRole('customer')}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
             >
-              <Text style={[styles.roleText, role === 'customer' && styles.roleTextActive]}>
-                Client
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.roleButton, role === 'chef' && styles.roleActive]}
-              onPress={() => setRole('chef')}
-            >
-              <Text style={[styles.roleText, role === 'chef' && styles.roleTextActive]}>
-                Chef
-              </Text>
-            </TouchableOpacity>
-          </View>
+              {/* Logo */}
+              <Text style={styles.logo}> TAC</Text>
 
-          {/* Email Input */}
-          <Text style={styles.label}>Email Address</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              placeholderTextColor={COLORS.gray}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
+              {/* Title */}
+              <Text style={styles.title}>Welcome Back</Text>
+              <Text style={styles.subtitle}>Find your perfect chef.</Text>
 
-          {/* Password Input */}
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              placeholderTextColor={COLORS.gray}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              returnKeyType="done"
-              onSubmitEditing={handleLogin}
-            />
-          </View>
+              {/* Role Toggle */}
+              <Text style={styles.label}>I am a:</Text>
+              <View style={styles.roleContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.roleButton,
+                    role === "customer" && styles.roleActive,
+                  ]}
+                  onPress={() => setRole("customer")}
+                >
+                  <Text
+                    style={[
+                      styles.roleText,
+                      role === "customer" && styles.roleTextActive,
+                    ]}
+                  >
+                    Client
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.roleButton,
+                    role === "chef" && styles.roleActive,
+                  ]}
+                  onPress={() => setRole("chef")}
+                >
+                  <Text
+                    style={[
+                      styles.roleText,
+                      role === "chef" && styles.roleTextActive,
+                    ]}
+                  >
+                    Chef
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-          {/* Forgot Password */}
-          <TouchableOpacity style={styles.forgotButton}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
-          </TouchableOpacity>
+              {/* Email Input */}
+              <Text style={styles.label}>Email Address</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#999"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+              </View>
 
-          {/* Error Message */}
-          {error && <Text style={styles.error}>{error}</Text>}
+              {/* Password Input */}
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#999"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  returnKeyType="done"
+                  onSubmitEditing={handleLogin}
+                />
+              </View>
 
-          {/* Login Button */}
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={handleLogin}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color={COLORS.secondary} />
-            ) : (
-              <Text style={styles.loginButtonText}>Login</Text>
-            )}
-          </TouchableOpacity>
+              {/* Forgot Password */}
+              <TouchableOpacity
+                style={styles.forgotButton}
+                onPress={() =>
+                  Alert.alert(
+                    "Forgot Password",
+                    "Please contact  our support at support@takeachef.com to reset your password.",
+                    [{ text: "OK" }],
+                  )
+                }
+              >
+                <Text style={styles.forgotText}>Forgot Password?</Text>
+              </TouchableOpacity>
 
-          {/* Create Account Button */}
-          <Link href="/(auth)/register" asChild>
-            <TouchableOpacity style={styles.createButton}>
-              <Text style={styles.createButtonText}>Create Account</Text>
-            </TouchableOpacity>
-          </Link>
+              {/* Error Message */}
+              {error && <Text style={styles.error}>{error}</Text>}
 
-          {/* Or continue with */}
-          <Text style={styles.orText}>Or continue with</Text>
-          <View style={styles.socialContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialIcon}>✉️</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Text style={styles.socialIcon}>💬</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              {/* Login Button */}
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#1A1A1A" />
+                ) : (
+                  <Text style={styles.loginButtonText}>Login</Text>
+                )}
+              </TouchableOpacity>
+
+              {/* Create Account Button */}
+              <Link href="/(auth)/register" asChild>
+                <TouchableOpacity style={styles.createButton}>
+                  <Text style={styles.createButtonText}>Create Account</Text>
+                </TouchableOpacity>
+              </Link>
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: SIZES.lg,
-    paddingTop: 60,
+    paddingTop: 80,
     paddingBottom: 40,
   },
   logo: {
     fontSize: SIZES.xLarge,
-    fontWeight: 'bold',
-    color: COLORS.secondary,
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: COLORS.white,
+    textAlign: "center",
     marginBottom: SIZES.lg,
   },
   title: {
     fontSize: SIZES.xxLarge,
-    fontWeight: 'bold',
-    color: COLORS.secondary,
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: COLORS.white,
+    textAlign: "center",
   },
   subtitle: {
     fontSize: SIZES.regular,
-    color: COLORS.gray,
-    textAlign: 'center',
+    color: "rgba(255,255,255,0.8)",
+    textAlign: "center",
     marginBottom: SIZES.xl,
   },
   label: {
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: COLORS.white,
     marginBottom: SIZES.sm,
     marginTop: SIZES.md,
   },
   roleContainer: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.lightGray,
+    flexDirection: "row",
+    backgroundColor: "rgba(255,255,255,0.1)",
     borderRadius: SIZES.radiusLg,
     padding: 4,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.2)",
   },
   roleButton: {
     flex: 1,
     paddingVertical: SIZES.sm,
     borderRadius: SIZES.radiusLg,
-    alignItems: 'center',
+    alignItems: "center",
   },
   roleActive: {
     backgroundColor: COLORS.primary,
   },
   roleText: {
     fontSize: SIZES.regular,
-    color: COLORS.gray,
-    fontWeight: '500',
+    color: "rgba(255,255,255,0.6)",
+    fontWeight: "500",
   },
   roleTextActive: {
-    color: COLORS.secondary,
-    fontWeight: '600',
+    color: "#1A1A1A",
+    fontWeight: "600",
   },
   inputContainer: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "rgba(255,255,255,0.9)",
     borderRadius: SIZES.radius,
     borderWidth: 1,
-    borderColor: COLORS.lightGray,
+    borderColor: "rgba(255,255,255,0.3)",
   },
   input: {
     padding: SIZES.md,
     fontSize: SIZES.regular,
-    color: COLORS.secondary,
+    color: "#1A1A1A",
   },
   forgotButton: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginTop: SIZES.sm,
   },
   forgotText: {
-    color: COLORS.gray,
+    color: "rgba(255,255,255,0.8)",
     fontSize: SIZES.medium,
   },
   error: {
     color: COLORS.cancelled,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: SIZES.sm,
+    backgroundColor: "rgba(230, 57, 70, 0.2)",
+    padding: SIZES.sm,
+    borderRadius: SIZES.radius,
   },
   loginButton: {
     backgroundColor: COLORS.primary,
     borderRadius: SIZES.radiusLg,
     paddingVertical: SIZES.md,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: SIZES.lg,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   loginButtonText: {
-    color: COLORS.secondary,
+    color: "#1A1A1A",
     fontSize: SIZES.large,
-    fontWeight: '600',
+    fontWeight: "700",
   },
   createButton: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "rgba(255,255,255,0.1)",
     borderRadius: SIZES.radiusLg,
     paddingVertical: SIZES.md,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: SIZES.sm,
     borderWidth: 1,
-    borderColor: COLORS.lightGray,
+    borderColor: "rgba(255,255,255,0.3)",
   },
   createButtonText: {
-    color: COLORS.secondary,
+    color: COLORS.white,
     fontSize: SIZES.large,
-    fontWeight: '600',
-  },
-  orText: {
-    textAlign: 'center',
-    color: COLORS.gray,
-    marginTop: SIZES.lg,
-    marginBottom: SIZES.md,
-  },
-  socialContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: SIZES.md,
-  },
-  socialButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: COLORS.lightGray,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  socialIcon: {
-    fontSize: 20,
+    fontWeight: "600",
   },
 });

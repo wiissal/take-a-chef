@@ -12,10 +12,12 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  ImageBackground,
 } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { COLORS, SIZES } from '../../constants/theme';
 import { useAuthStore } from '../../src/stores';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -50,145 +52,168 @@ export default function RegisterScreen() {
     }
   };
 
+  // Background images based on role
+  const backgroundImage = role === 'customer' 
+    ? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800'  // Food plate
+    : 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800'; // Chef in kitchen
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+    <ImageBackground
+      source={{ uri: backgroundImage }}
+      style={styles.backgroundImage}
+      resizeMode="cover"
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+      <LinearGradient
+        colors={['rgba(0,0,0,0.7)', 'rgba(0,0,0,0.85)', 'rgba(0,0,0,0.95)']}
+        style={styles.gradient}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
         >
-          {/* Logo */}
-          <Text style={styles.logo}> TAC</Text>
-
-          {/* Title */}
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join us and find your chef.</Text>
-
-          {/* Role Toggle */}
-          <Text style={styles.label}>I am a:</Text>
-          <View style={styles.roleContainer}>
-            <TouchableOpacity
-              style={[styles.roleButton, role === 'customer' && styles.roleActive]}
-              onPress={() => setRole('customer')}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
             >
-              <Text style={[styles.roleText, role === 'customer' && styles.roleTextActive]}>
-                Client
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.roleButton, role === 'chef' && styles.roleActive]}
-              onPress={() => setRole('chef')}
-            >
-              <Text style={[styles.roleText, role === 'chef' && styles.roleTextActive]}>
-                Chef
-              </Text>
-            </TouchableOpacity>
-          </View>
+              {/* Logo */}
+              <Text style={styles.logo}>🍽️ TAC</Text>
 
-          {/* Full Name Input */}
-          <Text style={styles.label}>Full Name</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your full name"
-              placeholderTextColor={COLORS.gray}
-              value={name}
-              onChangeText={setName}
-              autoCapitalize="words"
-              returnKeyType="next"
-            />
-          </View>
+              {/* Title */}
+              <Text style={styles.title}>Create Account</Text>
+              <Text style={styles.subtitle}>Join us and find your chef.</Text>
 
-          {/* Email Input */}
-          <Text style={styles.label}>Email Address</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              placeholderTextColor={COLORS.gray}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
+              {/* Role Toggle */}
+              <Text style={styles.label}>I am a:</Text>
+              <View style={styles.roleContainer}>
+                <TouchableOpacity
+                  style={[styles.roleButton, role === 'customer' && styles.roleActive]}
+                  onPress={() => setRole('customer')}
+                >
+                  <Text style={[styles.roleText, role === 'customer' && styles.roleTextActive]}>
+                    Client
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.roleButton, role === 'chef' && styles.roleActive]}
+                  onPress={() => setRole('chef')}
+                >
+                  <Text style={[styles.roleText, role === 'chef' && styles.roleTextActive]}>
+                    Chef
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-          {/* Password Input */}
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              placeholderTextColor={COLORS.gray}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              returnKeyType="next"
-            />
-          </View>
+              {/* Full Name Input */}
+              <Text style={styles.label}>Full Name</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your full name"
+                  placeholderTextColor="#999"
+                  value={name}
+                  onChangeText={setName}
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                />
+              </View>
 
-          {/* Confirm Password Input */}
-          <Text style={styles.label}>Confirm Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm your password"
-              placeholderTextColor={COLORS.gray}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-              returnKeyType="done"
-              onSubmitEditing={handleRegister}
-            />
-          </View>
+              {/* Email Input */}
+              <Text style={styles.label}>Email Address</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#999"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+              </View>
 
-          {/* Error Message */}
-          {error && <Text style={styles.error}>{error}</Text>}
+              {/* Password Input */}
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#999"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  returnKeyType="next"
+                />
+              </View>
 
-          {/* Register Button */}
-          <TouchableOpacity
-            style={styles.registerButton}
-            onPress={handleRegister}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color={COLORS.secondary} />
-            ) : (
-              <Text style={styles.registerButtonText}>Create Account</Text>
-            )}
-          </TouchableOpacity>
+              {/* Confirm Password Input */}
+              <Text style={styles.label}>Confirm Password</Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirm your password"
+                  placeholderTextColor="#999"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry
+                  returnKeyType="done"
+                  onSubmitEditing={handleRegister}
+                />
+              </View>
 
-          {/* Already have account */}
-          <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>Already have an account? </Text>
-            <Link href="/(auth)/login" asChild>
-              <TouchableOpacity>
-                <Text style={styles.loginLink}>Login</Text>
+              {/* Error Message */}
+              {error && <Text style={styles.error}>{error}</Text>}
+
+              {/* Register Button */}
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={handleRegister}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#1A1A1A" />
+                ) : (
+                  <Text style={styles.registerButtonText}>Create Account</Text>
+                )}
               </TouchableOpacity>
-            </Link>
-          </View>
 
-          {/* Terms */}
-          <Text style={styles.termsText}>
-            By creating an account, you agree to our{'\n'}
-            <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
-            <Text style={styles.termsLink}>Privacy Policy</Text>
-          </Text>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              {/* Already have account */}
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>Already have an account? </Text>
+                <Link href="/(auth)/login" asChild>
+                  <TouchableOpacity>
+                    <Text style={styles.loginLink}>Login</Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
+
+              {/* Terms */}
+              <Text style={styles.termsText}>
+                By creating an account, you agree to our{'\n'}
+                <Text style={styles.termsLink}>Terms of Service</Text> and{' '}
+                <Text style={styles.termsLink}>Privacy Policy</Text>
+              </Text>
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   scrollContent: {
     flexGrow: 1,
@@ -199,33 +224,35 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: SIZES.xLarge,
     fontWeight: 'bold',
-    color: COLORS.secondary,
+    color: COLORS.white,
     textAlign: 'center',
     marginBottom: SIZES.lg,
   },
   title: {
     fontSize: SIZES.xxLarge,
     fontWeight: 'bold',
-    color: COLORS.secondary,
+    color: COLORS.white,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: SIZES.regular,
-    color: COLORS.gray,
+    color: 'rgba(255,255,255,0.8)',
     textAlign: 'center',
     marginBottom: SIZES.xl,
   },
   label: {
     fontSize: SIZES.medium,
-    color: COLORS.secondary,
+    color: COLORS.white,
     marginBottom: SIZES.sm,
     marginTop: SIZES.md,
   },
   roleContainer: {
     flexDirection: 'row',
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: SIZES.radiusLg,
     padding: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   roleButton: {
     flex: 1,
@@ -238,28 +265,31 @@ const styles = StyleSheet.create({
   },
   roleText: {
     fontSize: SIZES.regular,
-    color: COLORS.gray,
+    color: 'rgba(255,255,255,0.6)',
     fontWeight: '500',
   },
   roleTextActive: {
-    color: COLORS.secondary,
+    color: '#1A1A1A',
     fontWeight: '600',
   },
   inputContainer: {
-    backgroundColor: COLORS.white,
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderRadius: SIZES.radius,
     borderWidth: 1,
-    borderColor: COLORS.lightGray,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
   input: {
     padding: SIZES.md,
     fontSize: SIZES.regular,
-    color: COLORS.secondary,
+    color: '#1A1A1A',
   },
   error: {
     color: COLORS.cancelled,
     textAlign: 'center',
     marginTop: SIZES.sm,
+    backgroundColor: 'rgba(230, 57, 70, 0.2)',
+    padding: SIZES.sm,
+    borderRadius: SIZES.radius,
   },
   registerButton: {
     backgroundColor: COLORS.primary,
@@ -267,11 +297,16 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.md,
     alignItems: 'center',
     marginTop: SIZES.lg,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   registerButtonText: {
-    color: COLORS.secondary,
+    color: '#1A1A1A',
     fontSize: SIZES.large,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   loginContainer: {
     flexDirection: 'row',
@@ -280,7 +315,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.lg,
   },
   loginText: {
-    color: COLORS.gray,
+    color: 'rgba(255,255,255,0.8)',
     fontSize: SIZES.medium,
   },
   loginLink: {
@@ -290,7 +325,7 @@ const styles = StyleSheet.create({
   },
   termsText: {
     textAlign: 'center',
-    color: COLORS.gray,
+    color: 'rgba(255,255,255,0.6)',
     fontSize: SIZES.small,
     marginTop: SIZES.lg,
     lineHeight: 18,
