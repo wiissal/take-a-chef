@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { COLORS } from '../../constants/theme';
+import { useAuthStore } from '../../src/stores';
 import api from '../../src/config/api';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { logout } = useAuthStore();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,9 +38,15 @@ export default function ProfileScreen() {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('token');
-      await AsyncStorage.removeItem('user');
-      router.replace('/splash');
+      // Clear SecureStore
+      await SecureStore.deleteItemAsync('token');
+      await SecureStore.deleteItemAsync('user');
+      
+      // Clear Zustand auth state
+      logout();
+      
+      // Navigate to login
+      router.replace('/(auth)/login');
     } catch (error) {
       console.log('Error logging out:', error);
     }
@@ -61,25 +69,15 @@ export default function ProfileScreen() {
 
       {/* Profile Card */}
       <View style={styles.profileCard}>
-        <View style={styles.photoContainer}>
-          <Image
-            source={{ uri: user?.photo || 'https://i.pravatar.cc/100' }}
-            style={styles.profilePhoto}
-          />
-          <View style={styles.editIconContainer}>
-            <Ionicons name="pencil" size={14} color="#1A1A1A" />
-          </View>
-        </View>
+        <Image
+          source={{ 
+            uri: user?.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=100&background=F7C948&color=1A1A1A&bold=true`
+          }}
+          style={styles.profilePhoto}
+        />
         
         <Text style={styles.userName}>{user?.name || 'User'}</Text>
         <Text style={styles.userEmail}>{user?.email || 'user@email.com'}</Text>
-
-        <TouchableOpacity 
-          style={styles.editProfileButton}
-          onPress={() => router.push('/edit-profile')}
-        >
-          <Text style={styles.editProfileText}>Edit Profile</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Account Settings */}
@@ -179,28 +177,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  photoContainer: {
-    position: 'relative',
-    marginBottom: 16,
-  },
   profilePhoto: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#E0E0E0',
-  },
-  editIconContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: COLORS.primary,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: 16,
     borderWidth: 3,
-    borderColor: COLORS.white,
+    borderColor: COLORS.primary,
   },
   userName: {
     fontSize: 20,
@@ -211,18 +194,6 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 14,
     color: '#666666',
-    marginBottom: 16,
-  },
-  editProfileButton: {
-    backgroundColor: '#1A1A1A',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  editProfileText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.white,
   },
   section: {
     backgroundColor: COLORS.white,
