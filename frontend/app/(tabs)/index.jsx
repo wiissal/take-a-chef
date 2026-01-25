@@ -138,7 +138,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Chefs</Text>
+        <Text style={styles.headerTitle}>Picked Just For YOU</Text>
         <TouchableOpacity>
           <Ionicons name="person-outline" size={32} color={COLORS.secondary} />
         </TouchableOpacity>
