@@ -1,7 +1,8 @@
 FROM node:18-alpine
 # Set working directory (Railway already sets context to backend)
 WORKDIR /usr/src/app
-COPY package*.json ./
+
+COPY backend/package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 3000
