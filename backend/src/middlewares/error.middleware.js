@@ -1,7 +1,9 @@
 const ApiError = require ('../utils/ApiError');
 
+const logger = require('../config/logger');
+
 //not found error handler
-const notFound = (req, res, next)=>{
+const notFound = ( req, res, next)=>{
   const error = new ApiError(404, `Route not found- ${req.originalUrl}`);
   next (error);
 };
@@ -10,29 +12,20 @@ const notFound = (req, res, next)=>{
 const errorHandler = (err, req, res, next)=>{
   let { statusCode , message} = err;
 
-  //default to 500 if no status code
-  if(!statusCode){
-    statusCode = 500;
-  }
+  // Log error
+  logger.error(`${statusCode} - ${message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
-  //dev environment - sending full error
-  if(process.env.NODE_ENV ==='development'){
-    res.status(statusCode).json({
- success: false,
-      status: statusCode,
-      message: message,
+  res.status(statusCode).json({
+    success: false,
+    status: statusCode,
+    message,
+    ...(process.env.NODE_ENV === 'development' && { 
       stack: err.stack,
-      error: err
-    });
-  }else {
-    //production env send minimal error
-    res.status(statusCode).json({
-      success: false,
-      status: statusCode,
-      message: message
-    });
-  }
+      error: err 
+    })
+  });
 };
+
 module.exports = {
   notFound,
   errorHandler

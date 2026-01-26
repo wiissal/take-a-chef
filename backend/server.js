@@ -8,6 +8,8 @@ const swaggerSpec = require('./src/config/swagger');
 const { sequelize, testConnection } = require('./src/config/database');
 const { User, Chef, Customer, Dish, Booking, Review } = require('./src/models');
 const { notFound, errorHandler } = require('./src/middlewares/error.middleware');
+const logger = require('./src/config/logger');  
+const morganMiddleware = require('./src/middlewares/morgan.middleware');  
 
 // Create Express app
 const app = express();
@@ -16,6 +18,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morganMiddleware);  
+
 
 // Swagger Documentation 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
@@ -123,16 +127,16 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, '0.0.0.0',async () => {
-  console.log(` Server is running on http://localhost:${PORT}`);
-  console.log(` API Documentation available at http://localhost:${PORT}/api-docs`);
-  console.log(` Environment: ${process.env.NODE_ENV}`);
+  logger.info(` Server is running on http://localhost:${PORT}`);
+ logger.info(` API Documentation available at http://localhost:${PORT}/api-docs`);
+  logger.info(` Environment: ${process.env.NODE_ENV}`);
   
   // Test database connection
   await testConnection();
   
   // Sync models with database
   await sequelize.sync({ alter: true });
-  console.log(' Database models synchronized!');
+  logger.info(' Database models synchronized!');
 });
 
 module.exports = app;
