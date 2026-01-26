@@ -24,7 +24,7 @@ exports.getProfile = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get profile error:', error);
+    logger.error('Get profile error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

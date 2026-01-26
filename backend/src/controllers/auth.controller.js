@@ -36,14 +36,14 @@ const register = async (req, res, next) => {
       role
     });
 
-    // ✅ AUTO-CREATE CUSTOMER PROFILE IF ROLE IS CUSTOMER
+    //  AUTO-CREATE CUSTOMER PROFILE IF ROLE IS CUSTOMER
     if (role === 'customer') {
       await Customer.create({
         user_id: user.id
       });
     }
 
-    // ✅ AUTO-CREATE CHEF PROFILE IF ROLE IS CHEF (optional)
+    //  AUTO-CREATE CHEF PROFILE IF ROLE IS CHEF (optional)
     if (role === 'chef') {
       await Chef.create({
         user_id: user.id,

@@ -27,11 +27,10 @@ export default function PersonalInformationScreen() {
     try {
       // Debug logs
       const token = await SecureStore.getItemAsync('token');
-      console.log(' Token exists:', !!token);
       console.log(' Token preview:', token?.substring(0, 20) + '...');
       
       const response = await api.get('/users/profile');
-      console.log(' User profile:', response.data);
+      
       setUser(response.data.user);
     } catch (error) {
       console.log(' Error fetching user:', error);

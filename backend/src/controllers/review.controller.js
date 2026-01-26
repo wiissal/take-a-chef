@@ -111,7 +111,7 @@ const updateChefRating = async (chef_id) => {
       }
     );
   } catch (error) {
-    console.error("Error updating chef rating: ", error);
+    logger.error("Error updating chef rating: ", error);
   }
 };
 module.exports = {

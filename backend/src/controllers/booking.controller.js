@@ -7,21 +7,21 @@ const createBooking = async (req, res, next) => {
   try {
     const { chef_id, booking_date, event_type, guest_count, special_requests } =
       req.body;
-    console.log("🔍 req.user:", req.user); // ADD THIS
-    console.log("🔍 req.user.id:", req.user.id); // ADD THIS
-    console.log("🔍 req.user.role:", req.user.role); // ADD THIS
+    logger.info("🔍 req.user:", req.user);
+    logger.info("🔍 req.user.id:", req.user.id); 
+    logger.info("🔍 req.user.role:", req.user.role); 
 
     //verify the user is a customer
     if (req.user.role !== "customer") {
       return next(new ApiError(403, "Only customers can create bookings"));
     }
-    console.log("✅ About to find customer with user_id:", req.user.id); // ADD THIS
+    logger.info("About to find customer with user_id:", req.user.id); 
 
     //get customer profile
     const customer = await Customer.findOne({
       where: { user_id: req.user.id },
     });
-    console.log("🔍 Customer found:", customer); // ADD THIS
+    logger.info("🔍 Customer found:", customer);
 
     if (!customer) {
       return next(new ApiError(404, "Customer profile not found"));
