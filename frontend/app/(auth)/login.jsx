@@ -18,6 +18,8 @@ import { Link, useRouter } from "expo-router";
 import { COLORS, SIZES } from "../../constants/theme";
 import { useAuthStore } from "../../src/stores";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -26,20 +28,26 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
-    }
+ const handleLogin = async () => {
+  if (!email || !password) {
+    Alert.alert('Error', 'Please fill in all fields');
+    return;
+  }
 
-    const result = await login(email, password);
-    if (result.success) {
-      router.replace("/(tabs)");
+  const result = await login(email, password);
+  if (result.success) {
+    // Check if user has seen onboarding
+    const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
+    
+    if (hasSeenOnboarding === 'true') {
+      router.replace('/(tabs)');
     } else {
-      Alert.alert("Login Failed", result.error);
+      router.replace('/onboarding');
     }
-  };
-
+  } else {
+    Alert.alert('Login Failed', result.error);
+  }
+};
   // Background images based on role
   const backgroundImage =
     role === "customer"

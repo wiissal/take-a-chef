@@ -39,6 +39,7 @@ export default function RootLayout() {
     if (
       isAuthenticated && 
       !inTabsGroup && 
+            !onOnboarding &&              
       !onChefProfile && 
       !onBooking && 
       !onBookingDetails &&

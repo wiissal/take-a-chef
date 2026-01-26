@@ -50,16 +50,15 @@ export default function OnboardingScreen() {
     }
   };
 
-  const handleSkip = async () => {
-    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-    router.replace('/(auth)/login');
-  };
-
   const handleGetStarted = async () => {
-    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-    router.replace('/(auth)/login');
-  };
+  await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+  router.replace('/(tabs)');
+};
 
+const handleSkip = async () => {
+  await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+  router.replace('/(tabs)');
+};
   const renderItem = ({ item }) => (
     <View style={styles.slide}>
       <View style={styles.iconCircle}>

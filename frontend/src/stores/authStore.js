@@ -22,7 +22,7 @@ const useAuthStore = create((set) => ({
       await SecureStore.setItemAsync("user", JSON.stringify(user));
       
       set({ user, token, isAuthenticated: true, isLoading: false });
-      return { success: true };
+      return { success: true, showOnboarding : true};
     } catch (error) {
       console.log("Registration error:", error); 
       console.log("Error response:", error.response?.data); 

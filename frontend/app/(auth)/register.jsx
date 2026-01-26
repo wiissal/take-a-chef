@@ -28,29 +28,30 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
+ const handleRegister = async () => {
+  if (!name || !email || !password || !confirmPassword) {
+    Alert.alert('Error', 'Please fill in all fields');
+    return;
+  }
 
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
+  if (password !== confirmPassword) {
+    Alert.alert('Error', 'Passwords do not match');
+    return;
+  }
 
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
-      return;
-    }
+  if (password.length < 6) {
+    Alert.alert('Error', 'Password must be at least 6 characters');
+    return;
+  }
 
-    const result = await register({ name, email, password, role });
-    if (result.success) {
-      router.replace('/(tabs)');
-    } else {
-      Alert.alert('Registration Failed', result.error);
-    }
-  };
+  const result = await register({ name, email, password, role });
+  if (result.success) {
+    // New users always see onboarding
+    router.replace('/onboarding');
+  } else {
+    Alert.alert('Registration Failed', result.error);
+  }
+};
 
   // Background images based on role
   const backgroundImage = role === 'customer' 
