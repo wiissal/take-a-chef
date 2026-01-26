@@ -4,7 +4,10 @@ WORKDIR /app
 
 COPY backend/package*.json ./
 RUN npm install
-COPY . .
+COPY backend ./
+
+# List files to debug (temporary)
+RUN ls -la
 EXPOSE 3000
 
 #set env to production
