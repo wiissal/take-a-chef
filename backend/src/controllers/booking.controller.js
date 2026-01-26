@@ -1,6 +1,8 @@
 const { Booking, Chef, Customer, User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { Op } = require("sequelize");
+const logger = require('../config/logger');
+
 
 //create a new booking for customer only
 const createBooking = async (req, res, next) => {

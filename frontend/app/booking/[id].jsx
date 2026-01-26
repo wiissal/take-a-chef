@@ -40,36 +40,48 @@ export default function BookingScreen() {
 
   const handleContinue = async () => {
   try {
-    console.log('Creating booking...');
+    console.log('🔍 DEBUG - Raw guests value:', guests);
+    console.log('🔍 DEBUG - Type of guests:', typeof guests);
+    console.log('🔍 DEBUG - Parsed guests:', parseInt(guests, 10));
+    
+    // Validate inputs
+    if (!selectedDate) {
+      alert('Please select a date');
+      return;
+    }
+    
+    if (!guests || guests === '') {
+      alert('Please enter number of guests');
+      return;
+    }
+    
+    const guestsNumber = parseInt(guests, 10);
+    
+    if (isNaN(guestsNumber) || guestsNumber < 1 || guestsNumber > 50) {
+      alert('Number of guests must be between 1 and 50');
+      return;
+    }
     
     // Call the API to create booking
     const bookingData = {
-      chef_id: parseInt(id),
+      chef_id: parseInt(id, 10),
       booking_date: selectedDate,
-      booking_time: '19:00:00', // You can add a time picker later
-      guests: parseInt(guests),
-      total_price: 100, // Calculate based on chef price * guests
-      status: 'pending',
+      number_of_guests: guestsNumber,
+      preferences: `${occasion}, ${specialties.join(', ')}`,
     };
     
-    const response = await api.post('/bookings', bookingData);
-    console.log(' Booking created:', response.data);
+    console.log('📤 Sending booking data:', JSON.stringify(bookingData, null, 2));
     
-    // Navigate to confirmation with real data
-    router.push({
-      pathname: '/(tabs)/confirmation',
-      params: {
-        chefName: 'Chef Name',
-        chefPhoto: 'https://i.pravatar.cc/100',
-        occasion: occasion,
-        date: selectedDate,
-        time: '7:30 PM',
-        eventType: occasion,
-      },
-    });
+    const response = await api.post('/bookings', bookingData);
+    console.log('✅ Booking created:', response.data);
+
+    // Navigate to confirmation tab
+    router.push('/(tabs)/confirmation');
   } catch (error) {
-    console.log('❌ Error creating booking:', error.response?.data || error.message);
-    alert('Failed to create booking. Please try again.');
+    console.log('❌ Full error object:', error);
+    console.log('❌ Error response:', error.response?.data);
+    console.log('❌ Error config:', error.config?.data);
+    alert('Failed to create booking: ' + (error.response?.data?.message || error.message));
   }
 };
 
