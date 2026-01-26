@@ -4,10 +4,10 @@ const bcrypt = require('bcrypt');
 
 async function seedDatabase() {
   try {
-    console.log('🌱 Starting database seeding...');
+    console.log(' Starting database seeding...');
 
     // Clean old test data
-    console.log('🗑️ Cleaning old test data...');
+    console.log(' Cleaning old test data...');
     await Review.destroy({ where: {} });
     await Booking.destroy({ where: {} });
     await Dish.destroy({ where: {} });
@@ -21,7 +21,7 @@ async function seedDatabase() {
 
     const password = await bcrypt.hash('password123', 10);
 
-    console.log('👥 Creating users...');
+    console.log('Creating users...');
 
     // Create Customers
     const [customer1] = await User.findOrCreate({
@@ -133,7 +133,7 @@ async function seedDatabase() {
         user_id: chefUser1.id,
         bio: 'Award-winning Moroccan chef bringing modern twists to traditional recipes. Passionate about sustainable, locally-sourced ingredients and cultural fusion.',
         specialty: 'Moroccan Fusion',
-        photo: 'https://media.scoolinary.app/images/bpxcftr-profile-uploads/35/image/Najat-Kaanache_bio.jpg',
+        photo: 'https://www.cacao-barry.com/sites/default/files/styles/half_width_image/public/unnamed-4%5B1%5D.jpg.webp?itok=RqwAQqeY',
         rating: 4.9,
         total_reviews: 127,
       },
@@ -157,7 +157,7 @@ async function seedDatabase() {
         user_id: chefUser3.id,
         bio: 'Master of traditional Moroccan cuisine with 20 years of experience. Specializing in authentic tagines, couscous, and pastries passed down through generations.',
         specialty: 'Traditional Moroccan',
-        photo: 'https://mylittlekech.com/wp-content/uploads/2020/11/chef-moha-top-3-championnat-tapas.jpg',
+        photo: 'https://aujourdhui.ma/wp-content/uploads/2021/06/PORTRAIT-CHEF-MOHA-.jpg?x44726',
         rating: 4.7,
         total_reviews: 156,
       },
@@ -231,25 +231,25 @@ async function seedDatabase() {
         chef_id: chef1.id,
         name: 'Deconstructed Chicken Tagine',
         description: 'Modern take on classic tagine with preserved lemons, olives, and aromatic spices',
-        price: 32,
+        price: 70,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500',
+        image: 'https://broccyourbody.com/wp-content/uploads/2021/05/787522D6-8F9C-4B24-B5D7-FFE86BCF6A8B-1365x1536.jpeg',
       },
       {
         chef_id: chef1.id,
         name: 'Saffron Lamb Couscous',
-        description: 'Seven-vegetable couscous with tender lamb, infused with saffron',
-        price: 35,
+        description: 'Seven-vegetable couscous with tender lamb ,Couscous is THE dish that any self-respecting Moroccan family eat every Friday',
+        price: 90,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=500',
+        image: 'https://moroccanfoodtour.com/wp-content/uploads/2019/03/Moroccan-Food-Tours-Blog-Pictures-7.jpg',
       },
       {
         chef_id: chef1.id,
         name: 'Harira Soup Reimagined',
         description: 'Contemporary presentation of traditional soup with chickpeas and lentils',
-        price: 12,
+        price: 18,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500',
+        image: 'https://www.grandmoroccanbazaar.com/wp-content/uploads/2022/12/Harira-Moroccan-soup-3-800x800.jpg.webp',
       },
 
       // Susur Lee - Asian Fusion
@@ -257,25 +257,25 @@ async function seedDatabase() {
         chef_id: chef2.id,
         name: 'Singaporean Chili Crab',
         description: 'Fresh crab in signature sweet and spicy tomato-chili sauce',
-        price: 45,
+        price: 205,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=500',
+        image: 'https://nomadette.com/wp-content/uploads/2022/06/Singapore-Chilli-Crab-1024x1536.jpg',
       },
       {
         chef_id: chef2.id,
         name: 'Miso Black Cod',
         description: 'Buttery black cod marinated in sweet miso with pickled vegetables',
-        price: 42,
+        price: 170,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=500',
+        image: 'https://cookingwithwineblog.com/wp-content/uploads/2024/09/Black-Cod-with-Miso-Butter-Sauce-Featured-1.jpg',
       },
       {
         chef_id: chef2.id,
         name: 'Thai Basil Duck',
         description: 'Crispy duck breast with Thai basil, chili, and tamarind glaze',
-        price: 38,
+        price: 180,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500',
+        image: 'https://media-cdn.tripadvisor.com/media/photo-s/26/8a/68/cc/crispy-basil-duck-duck.jpg',
       },
 
       // Mohamed Fadel - Traditional Moroccan
@@ -283,25 +283,25 @@ async function seedDatabase() {
         chef_id: chef3.id,
         name: 'Classic Lamb Tagine',
         description: 'Slow-cooked lamb with prunes, almonds, and honey in clay pot',
-        price: 30,
+        price: 130,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500',
+        image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi2ji5p2QQDN8dteyWhNWyA3BXEW0IV1QVmFDyjLviH58XnDgRWxAacezvw_5PTmOaXCoevx9ewwjWuxpI61fm5EDiH3lYV4CJCd7mvZ3qGkxhpwuHmLsVjPnf9vGRkEVbnnsoNfm-yMf1eGssca45hzJ72OnSumznmTs351Z98fhaP1Oofpe4FcfIgU2jB/w640-h426-rw/2.jpg',
       },
       {
         chef_id: chef3.id,
-        name: 'Royal Couscous',
-        description: 'Traditional couscous with lamb, chicken, merguez, and vegetables',
-        price: 34,
+        name: 'Seffa',
+        description: 'Seffa is a Maghrebi term for a dish of sweetened semolina cuscus with butter, cinnamon, and almonds.',
+        price: 110,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=500',
+        image: 'https://www.gzrecipes.com/content/uploads/sites/2/2025/11/IMG_1365-scaled-8-6926de07f3df96-04430957-1024x870.jpg',
       },
       {
         chef_id: chef3.id,
         name: 'Mechoui Lamb Shoulder',
         description: 'Whole roasted lamb shoulder with cumin and traditional spices',
-        price: 50,
+        price: 350,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500',
+        image: 'https://images.immediate.co.uk/production/volatile/sites/2/2022/04/Lamb_Shawarma-3fdc0a1.jpg?quality=90&resize=556,505',
       },
 
       // Meriem Tahiri - French Mediterranean
@@ -309,25 +309,25 @@ async function seedDatabase() {
         chef_id: chef4.id,
         name: 'Bouillabaisse Provençale',
         description: 'Traditional Marseille fish stew with saffron rouille',
-        price: 38,
+        price: 195,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=500',
+        image: 'https://lacuisinedegeraldine.fr/wp-content/uploads/2023/07/Bouillabaisse-116-683x1024.jpg',
       },
       {
         chef_id: chef4.id,
         name: 'Duck Confit',
         description: 'Slow-cooked duck leg with crispy skin and fingerling potatoes',
-        price: 36,
+        price: 120,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=500',
+        image: 'https://www.sevenhillswinery.com/wp-content/uploads/2019/09/duck-confit_1536x1152.jpg',
       },
       {
         chef_id: chef4.id,
         name: 'Pan-Seared Sea Bass',
         description: 'Mediterranean sea bass with fennel and cherry tomatoes',
-        price: 42,
+        price: 142,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500',
+        image: 'https://www.thedinnerbite.com/wp-content/uploads/2023/10/pan-seared-seabass-recipe-img-1.jpg',
       },
 
       // Ashley Palmer-Watts - Modern British
@@ -335,25 +335,25 @@ async function seedDatabase() {
         chef_id: chef5.id,
         name: 'Molecular Beef Wellington',
         description: 'Deconstructed Wellington with truffle foam and crispy pastry',
-        price: 48,
+        price: 248,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=500',
+        image: 'https://www.fodder.co.uk/app/uploads/2021/11/Beef-wellington-web-237x300.jpg'
       },
       {
         chef_id: chef5.id,
         name: 'Fish & Chips Elevated',
         description: 'Beer-battered fish with triple-cooked chips and mushy pea puree',
-        price: 28,
+        price: 198,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1579208575657-c595a05383b7?w=500',
+        image: 'https://images.immediate.co.uk/production/volatile/sites/30/2021/01/Next-level-fish-and-chips-f0ad0c4.jpg?quality=90&resize=708,643',
       },
       {
         chef_id: chef5.id,
         name: 'English Breakfast Reimagined',
         description: 'Modern take on classic fry-up with artisan ingredients',
-        price: 22,
+        price: 122,
         category: 'Brunch',
-        image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=500',
+        image: 'https://www.tamingtwins.com/wp-content/uploads/2025/04/full-english-breakfast-8-300x300.jpg',
       },
 
       // Jorge Badillo - Mexican
@@ -361,25 +361,25 @@ async function seedDatabase() {
         chef_id: chef6.id,
         name: 'Mole Poblano',
         description: 'Traditional chicken mole with 30+ ingredients and chocolate',
-        price: 32,
+        price: 132,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500',
+        image: 'https://images.squarespace-cdn.com/content/v1/59739d0ed2b857fb9af8f717/1569984238207-62GNS0LYZZ5ONG95CDH3/mole-poblano-cilantro-lime-rice.jpg',
       },
       {
         chef_id: chef6.id,
         name: 'Cochinita Pibil',
         description: 'Slow-roasted pork marinated in achiote and citrus',
-        price: 35,
+        price: 135,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=500',
+        image: 'https://carlsbadcravings.com/wp-content/uploads/2024/07/Cochinita-Pibil-10.jpg',
       },
       {
         chef_id: chef6.id,
         name: 'Authentic Tacos al Pastor',
         description: 'Spit-roasted pork tacos with pineapple and cilantro',
-        price: 18,
+        price: 158,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=500',
+        image: 'https://www.jocooks.com/wp-content/uploads/2022/04/tacos-al-pastor-feature-1.jpg',
       },
 
       // Khadija Bensdira - Moroccan Home Cooking
@@ -387,25 +387,25 @@ async function seedDatabase() {
         chef_id: chef7.id,
         name: 'Grandmothers Chicken Tagine',
         description: 'Family recipe passed down through generations with preserved lemons',
-        price: 28,
+        price: 128,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500',
+        image: 'https://ethnicspoon.com/wp-content/uploads/2013/12/tagine-chicken-1.jpg',
       },
       {
         chef_id: chef7.id,
         name: 'Homestyle Couscous',
         description: 'Traditional Friday couscous with vegetables and tender meat',
-        price: 26,
+        price: 126,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=500',
+        image: 'https://www.moroccoworldnews.com/wp-content/uploads/2024/11/couscous-1.jpg'
       },
       {
         chef_id: chef7.id,
         name: 'Rfissa',
         description: 'Traditional chicken dish with msemen and fenugreek',
-        price: 30,
+        price: 130,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500',
+        image: 'https://img.cuisineaz.com/660x660/2022/06/01/i184134-rfissa-au-poulet.jpeg',
       },
 
       // Amine Laabi - North African
@@ -413,25 +413,25 @@ async function seedDatabase() {
         chef_id: chef8.id,
         name: 'Charmoula Grilled Fish',
         description: 'Fresh fish marinated in North African spice blend',
-        price: 34,
+        price: 134,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500',
+        image: 'https://i.pinimg.com/736x/a4/a3/a8/a4a3a8c4801a5c77f9f43df75b1ce5f6.jpg',
       },
       {
         chef_id: chef8.id,
         name: 'Lamb Mechoui with Couscous',
         description: 'Roasted lamb with aromatic couscous and harissa',
-        price: 38,
+        price: 118,
         category: 'Main Course',
-        image: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500',
+        image: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-3637_11-16f3ba4.jpg',
       },
       {
         chef_id: chef8.id,
         name: 'Zaalouk & Bread',
         description: 'Smoky eggplant salad with fresh Moroccan bread',
-        price: 14,
+        price: 90,
         category: 'Appetizer',
-        image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500',
+        image: 'https://salimaskitchen.com/wp-content/uploads/2022/05/Zaalouk-Salimas-Kitchen-16-2.jpg',
       },
     ];
 
