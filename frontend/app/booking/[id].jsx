@@ -53,7 +53,7 @@ export default function BookingScreen() {
     };
     
     const response = await api.post('/bookings', bookingData);
-    console.log('✅ Booking created:', response.data);
+    console.log(' Booking created:', response.data);
     
     // Navigate to confirmation with real data
     router.push({
@@ -145,7 +145,7 @@ export default function BookingScreen() {
           <Text style={styles.label}>What is the address?</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g. 123 Main Street"
+            placeholder="e.g. Haut Founty Agadir"
             placeholderTextColor={COLORS.gray}
             value={address}
             onChangeText={setAddress}

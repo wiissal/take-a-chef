@@ -147,7 +147,7 @@ export default function BookingDetailsScreen() {
           <Ionicons name="cash-outline" size={20} color="#666" />
           <View style={styles.detailTextContainer}>
             <Text style={styles.detailLabel}>Total Price</Text>
-            <Text style={styles.detailValue}>${booking.total_price}</Text>
+            <Text style={styles.detailValue}>{booking.total_price}DH</Text>
           </View>
         </View>
 

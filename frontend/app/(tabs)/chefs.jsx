@@ -102,7 +102,7 @@ export default function ChefsListScreen() {
           {/* Price and Rating Row */}
           <View style={styles.bottomRow}>
             <Text style={styles.price}>
-              Menus from / ${item.price_per_person || 75}
+              Menus from / {item.price_per_person || 75}DH
             </Text>
             <View style={styles.ratingContainer}>
               <Ionicons name="star" size={14} color="#FFB800" />

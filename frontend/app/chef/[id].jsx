@@ -143,7 +143,7 @@ export default function ChefProfileScreen() {
                     <Text style={styles.dishDescription} numberOfLines={2}>
                       {dish.description}
                     </Text>
-                    <Text style={styles.dishPrice}>${dish.price}</Text>
+                    <Text style={styles.dishPrice}>{dish.price}DH</Text>
                   </View>
                 </View>
               ))
