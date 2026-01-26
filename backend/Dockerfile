@@ -1,6 +1,6 @@
 FROM node:18-alpine
 # Set working directory (Railway already sets context to backend)
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY backend/package*.json ./
 RUN npm install
