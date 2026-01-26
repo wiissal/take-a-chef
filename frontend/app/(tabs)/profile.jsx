@@ -71,7 +71,7 @@ export default function ProfileScreen() {
       <View style={styles.profileCard}>
         <Image
           source={{ 
-            uri: user?.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=100&background=F7C948&color=1A1A1A&bold=true`
+            uri: user?.photo || `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeKZbcVtvtJKKvj5jnN11zgX82gll4TsnmFg&s`
           }}
           style={styles.profilePhoto}
         />

@@ -107,8 +107,8 @@ export default function HomeScreen() {
       <TouchableOpacity 
         style={styles.viewButton}
         onPress={() =>{
-      console.log('🔍 Clicking VIEW PROFILE for chef:', item.id);
-    console.log('🔍 Navigating to:', `/chef/${item.id}`);
+      console.log('Clicking VIEW PROFILE for chef:', item.id);
+    console.log(' Navigating to:', `/chef/${item.id}`);
           router.push(`/chef/${item.id}`)}}
       >
         <Text style={styles.viewButtonText}>VIEW PROFILE</Text>

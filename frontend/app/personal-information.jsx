@@ -27,15 +27,15 @@ export default function PersonalInformationScreen() {
     try {
       // Debug logs
       const token = await SecureStore.getItemAsync('token');
-      console.log('🔑 Token exists:', !!token);
-      console.log('🔑 Token preview:', token?.substring(0, 20) + '...');
+      console.log(' Token exists:', !!token);
+      console.log(' Token preview:', token?.substring(0, 20) + '...');
       
       const response = await api.get('/users/profile');
-      console.log('✅ User profile:', response.data);
+      console.log(' User profile:', response.data);
       setUser(response.data.user);
     } catch (error) {
-      console.log('❌ Error fetching user:', error);
-      console.log('❌ Error response:', error.response?.data);
+      console.log(' Error fetching user:', error);
+      console.log(' Error response:', error.response?.data);
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function PersonalInformationScreen() {
       <View style={styles.profileCard}>
         <Image
           source={{ 
-            uri: user?.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&size=100&background=F7C948&color=1A1A1A&bold=true`
+            uri: user?.photo || `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeKZbcVtvtJKKvj5jnN11zgX82gll4TsnmFg&s`
           }}
           style={styles.avatar}
         />

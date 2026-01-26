@@ -78,7 +78,7 @@ export default function RegisterScreen() {
               showsVerticalScrollIndicator={false}
             >
               {/* Logo */}
-              <Text style={styles.logo}>🍽️ TAC</Text>
+              <Text style={styles.logo}> TAC</Text>
 
               {/* Title */}
               <Text style={styles.title}>Create Account</Text>
