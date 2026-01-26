@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: takeachef-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: take_a_chef
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - takeachef-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: takeachef-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: take_a_chef
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: your_super_secret_jwt_key_change_in_production
+      JWT_EXPIRES_IN: 15m
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - takeachef-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: sh -c "sleep 10 && node server.js"
+
+volumes:
+  postgres_data:
+
+networks:
+  takeachef-network:
+    driver: bridge
