@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user.controller");
 const { protect } = require("../middlewares/auth.middleware");
+const { changePasswordValidator } = require("../validators/user.validator");
+const validate = require("../middlewares/validation.middleware");
+
 
 /**
  * @swagger
@@ -93,6 +96,6 @@ router.get("/profile", protect, userController.getProfile);
  *       404:
  *         description: User not found
  */
-router.put("/change-password", protect, userController.changePassword);
+router.put("/change-password", protect, changePasswordValidator, validate, userController.changePassword);
 
 module.exports = router;

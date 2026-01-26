@@ -1,12 +1,17 @@
-const ApiError = require("../utils/ApiError");
-//validation helper
-const validate = (schema) => {
-  return (req, res, next) => {
-    const { error } = schema.validation(req.body);
-    if (error) {
-      return next(new ApiError(400, error.details[0].message));
-    }
-    next();
-  };
+const { validationResult } = require('express-validator');
+
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array().map(err => ({
+        field: err.path,
+        message: err.msg
+      }))
+    });
+  }
+  next();
 };
-module.exports = { validate };
+
+module.exports = validate;

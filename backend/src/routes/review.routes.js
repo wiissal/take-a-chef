@@ -1,7 +1,11 @@
 const express = require ('express');
 const router = express.Router();
+const reviewController = require('../controllers/review.controller');  
+
 const {createReview} = require ('../controllers/review.controller');
 const { protect, restrictTo} = require ('../middlewares/auth.middleware');
+const { createReviewValidator } = require('../validators/review.validator');
+const validate = require('../middlewares/validation.middleware');
 
 /**
  * @swagger
@@ -70,7 +74,7 @@ const { protect, restrictTo} = require ('../middlewares/auth.middleware');
  *       404:
  *         description: Booking not found
  */
-router.post('/', protect, restrictTo('customer'), createReview);
+router.post('/', protect, createReviewValidator, validate, reviewController.createReview);
 
 module.exports = router;
  

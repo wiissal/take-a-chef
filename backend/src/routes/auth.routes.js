@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { register, login, getMe } = require('../controllers/auth.controller');
 const { protect } = require('../middlewares/auth.middleware');
+const { registerValidator, loginValidator } = require('../validators/auth.validator');
+const validate = require('../middlewares/validation.middleware');
+const authController = require('../controllers/auth.controller');  
+
 
 /**
  * @swagger
@@ -98,7 +102,7 @@ const { protect } = require('../middlewares/auth.middleware');
  *       400:
  *         description: Validation error or user already exists
  */
-router.post('/register', register);
+router.post('/register', registerValidator, validate, authController.register);
 
 /**
  * @swagger
@@ -134,7 +138,7 @@ router.post('/register', register);
  *       401:
  *         description: Invalid credentials
  */
-router.post('/login', login);
+router.post('/login', loginValidator, validate, authController.login);
 
 /**
  * @swagger

@@ -8,6 +8,14 @@ const {
   cancelBooking
 } = require('../controllers/booking.controller');
 const { protect, restrictTo } = require('../middlewares/auth.middleware');
+const { 
+  createBookingValidator, 
+  updateBookingValidator, 
+  bookingIdValidator 
+} = require('../validators/booking.validator');
+const validate = require('../middlewares/validation.middleware');
+const bookingController = require('../controllers/booking.controller');  
+
 
 /**
  * @swagger
@@ -114,8 +122,8 @@ const { protect, restrictTo } = require('../middlewares/auth.middleware');
  *       200:
  *         description: List of user bookings
  */
-router.post('/', protect, createBooking);
-router.get('/', protect, getUserBookings);
+router.post('/', protect, createBookingValidator, validate, bookingController.createBooking);
+router.get('/', protect, bookingController.getUserBookings);
 
 /**
  * @swagger
@@ -139,7 +147,7 @@ router.get('/', protect, getUserBookings);
  *       404:
  *         description: Booking not found
  */
-router.get('/:id', protect, getBookingById);
+router.get('/:id', protect, bookingIdValidator, validate, bookingController.getBookingById);
 
 /**
  * @swagger
@@ -178,7 +186,7 @@ router.get('/:id', protect, getBookingById);
  *       404:
  *         description: Booking not found
  */
-router.put('/:id/status', protect, restrictTo('chef'), updateBookingStatus);
+router.put('/:id', protect, updateBookingValidator, validate, bookingController.updateBookingStatus);
 
 /**
  * @swagger
