@@ -89,6 +89,7 @@ export default function RootLayout() {
         <Stack.Screen name="personal-information" />
         <Stack.Screen name="change-password" />
         <Stack.Screen name="privacy-policy" />
+        <Stack.screen name = "screen" /> 
       </Stack>
       <StatusBar style="dark" />
     </QueryClientProvider>

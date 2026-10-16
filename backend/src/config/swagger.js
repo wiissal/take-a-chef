@@ -7,8 +7,8 @@ const options = {
       version: '1.0.0',
       description: 'API documentation for Take A Chef - Mobile app for discovering and booking chefs',
       contact: {
-        name: 'Wissal Ouboudjemaa',
-        email: 'wissalouboujemaa@gmail.com'
+        name: 'xxxxx',
+        email: 'xx@gmail.com'
       },
     },
     servers: [
