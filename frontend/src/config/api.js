@@ -1,9 +1,10 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-const API_URL = 'http://192.168.0.228:3000/api';
-// // For PRODUCTION (Railway)
-// const API_URL = 'https://take-a-chef-production.up.railway.app/api';
+// Backend URL comes from frontend/.env (EXPO_PUBLIC_API_URL).
+// Use your computer's local IP (ipconfig / ifconfig), NOT localhost,
+// so your phone can reach the backend over Wi-Fi.
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
   baseURL: API_URL,
