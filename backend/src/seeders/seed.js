@@ -6,6 +6,9 @@ async function seedDatabase() {
   try {
     console.log(' Starting database seeding...');
 
+    // Create the tables first if they don't exist yet (fresh database)
+    await sequelize.sync();
+
     // Clean old test data
     console.log(' Cleaning old test data...');
     await Review.destroy({ where: {} });

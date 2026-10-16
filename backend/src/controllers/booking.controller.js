@@ -7,7 +7,7 @@ const logger = require('../config/logger');
 //create a new booking for customer only
 const createBooking = async (req, res, next) => {
   try {
-    const { chef_id, booking_date, event_type, guest_count, special_requests } =
+    const { chef_id, booking_date, number_of_guests, preferences } =
       req.body;
     logger.info("🔍 req.user:", req.user);
     logger.info("🔍 req.user.id:", req.user.id); 
@@ -49,7 +49,7 @@ const createBooking = async (req, res, next) => {
       chef_id,
       booking_date: bookingDateOnly,
       booking_time: bookingTimeOnly,
-      guests: guest_count || 2,
+      guests: number_of_guests,
       status: 'pending',
       total_price: 0.00  
     });
