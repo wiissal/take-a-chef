@@ -140,9 +140,9 @@ npm install
 ```
 
 3. **Configure API endpoint:**
-Update `src/config/api.js` with your backend IP:
-```javascript
-const API_URL = 'http://YOUR_IP_ADDRESS:3000/api';
+Copy `.env.example` to `.env` and set your computer's local IP:
+```env
+EXPO_PUBLIC_API_URL=http://YOUR_IP_ADDRESS:3000/api
 ```
 
 4. **Start Expo development server:**
@@ -159,14 +159,13 @@ npx expo start
 
 ## 🧪 Test Credentials
 
+Created by `npm run seed` (all use password `password123`):
+
 ### Customers
-- Email: `sami@gmail.com`
-- Password: `samisami`
+- Email: `customer1@takeachef.com`
 
 ### Chefs
-- Email: `chef00@gmail.com`
-- Password: `1234567`
-- Other chefs: `susur@takeachef.com`, `mohamed@takeachef.com`, etc.
+- `najat@takeachef.com`, `susur@takeachef.com`, `mohamed@takeachef.com`, etc.
 
 ---
 
